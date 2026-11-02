@@ -26,4 +26,14 @@ assert.equal(api.getUser(), null);
 await assert.rejects(api.signIn({ email: "me@test.ph", password: "wrong" }), /don't match/);
 assert.equal((await api.signIn({ email: " ME@test.ph ", password: "longenough" })).seat, 3);
 
+const left = api.seatsLeft();
+await api.giveUpSeat();
+assert.equal(api.getUser().seat, null);
+assert.equal(api.seatsLeft(), left + 1);
+await api.reserveSeat(api.firstOpenSeat());
+assert.equal(api.seatsLeft(), left);
+await assert.rejects(api.addPost({ kind: "ask", text: "short" }), /at least 10/);
+await api.addPost({ kind: "offer", text: "Spare chairs for anyone hosting an event" });
+assert.equal(api.listPosts()[0].mine, true);
+
 console.log("api ok");

@@ -1,5 +1,5 @@
 import { useSyncExternalStore } from "react";
-import { NEXT_BREAKFAST, SEATS } from "../data/sample.js";
+import { NEXT_BREAKFAST, POSTS, SEATS } from "../data/sample.js";
 
 // The backend seam. Every screen talks to these functions only, so swapping localStorage for
 // Supabase later means rewriting this file and nothing else.
@@ -8,6 +8,7 @@ import { NEXT_BREAKFAST, SEATS } from "../data/sample.js";
 
 const USERS = "bbh.users";
 const SESSION = "bbh.session";
+const MY_POSTS = "bbh.posts";
 const wait = (ms = 450) => new Promise((r) => setTimeout(r, ms)); // feels like a network call
 
 const read = (k, fallback) => {
@@ -99,4 +100,54 @@ export async function signIn({ email, password }) {
 export function signOut() {
   localStorage.removeItem(SESSION);
   emit();
+}
+
+// Open seats for the next breakfast: the sample count, minus members on this browser with a seat.
+export function seatsLeft() {
+  const seated = Object.values(read(USERS, {})).filter((u) => u.seat != null).length;
+  return Math.max(0, NEXT_BREAKFAST.seatsTotal - NEXT_BREAKFAST.seatsTaken - seated);
+}
+
+function updateMe(patch) {
+  const users = read(USERS, {});
+  const key = read(SESSION, null);
+  if (!users[key]) throw new Error("You're signed out. Take your seat again to continue.");
+  write(USERS, { ...users, [key]: { ...users[key], ...patch } });
+  return publicUser(users[key]);
+}
+
+export async function reserveSeat(seat) {
+  await wait(300);
+  if (takenSeats().has(seat)) throw new Error("Someone just took that seat. Pick another one.");
+  return updateMe({ seat });
+}
+
+export async function giveUpSeat() {
+  await wait(200);
+  return updateMe({ seat: null });
+}
+
+export const firstOpenSeat = () => SEATS.findIndex((_, i) => !takenSeats().has(i));
+
+// Asks and offers: sample posts plus anything posted on this browser, newest first.
+export function listPosts() {
+  return [...read(MY_POSTS, []), ...POSTS].sort((a, b) => b.at.localeCompare(a.at));
+}
+let postsCache = { key: undefined, list: [] };
+export const usePosts = () =>
+  useSyncExternalStore(subscribe, () => {
+    const key = localStorage.getItem(MY_POSTS);
+    if (key !== postsCache.key) postsCache = { key, list: listPosts() };
+    return postsCache.list;
+  });
+
+export async function addPost({ kind, text }) {
+  await wait(300);
+  const me = getUser();
+  if (!me) throw new Error("You're signed out. Take your seat again to post.");
+  const clean = text.trim();
+  if (clean.length < 10) throw new Error("Say a little more so the table can help: at least 10 characters.");
+  const post = { id: `m${Date.now()}`, kind, name: me.name, business: me.business, at: new Date().toISOString(), text: clean.slice(0, 280), mine: true };
+  write(MY_POSTS, [post, ...read(MY_POSTS, [])]);
+  return post;
 }

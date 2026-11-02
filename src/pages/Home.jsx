@@ -2,11 +2,10 @@ import { ArrowRight, CalendarCheck, Handshake, Megaphone, Newspaper, Plus } from
 import Table from "../components/Table.jsx";
 import { Reveal, Sample, TaglineReveal, fmtDate, fmtTime } from "../components/ui.jsx";
 import { Link } from "../lib/router.jsx";
-import { seatsFor, useUser } from "../lib/api.js";
+import { seatsFor, seatsLeft, useUser } from "../lib/api.js";
 import { AGENDA, AGENDA_END, BOARD_PREVIEW, NEXT_BREAKFAST } from "../data/sample.js";
 
 const nb = NEXT_BREAKFAST;
-const seatsLeft = nb.seatsTotal - nb.seatsTaken;
 
 export default function Home() {
   return (
@@ -72,7 +71,7 @@ function Hero() {
                 Next breakfast · {fmtDate(nb.date)} · <span className="tnum font-mono">{fmtTime(nb.date)}</span>
               </p>
               <p className="caption-5 text-ink-2">
-                {nb.venue} · <span className="tnum font-mono">{seatsLeft}</span> of <span className="tnum font-mono">{nb.seatsTotal}</span> seats open
+                {nb.venue} · <span className="tnum font-mono">{seatsLeft()}</span> of <span className="tnum font-mono">{nb.seatsTotal}</span> seats open
               </p>
             </div>
             <Sample />
@@ -261,7 +260,7 @@ function FinalCta() {
           <span className="block text-cobalt">The chair is still empty.</span>
         </h2>
         <p className="body-3 mt-4 max-w-md text-ink-2">
-          {seatsLeft} seats are open for {fmtDate(nb.date)}. Reserving is free and takes about a minute.
+          {seatsLeft()} seats are open for {fmtDate(nb.date)}. Reserving is free and takes about a minute.
         </p>
         <Link to="/join" className="btn btn-primary button-lg mt-8 px-6 py-3">
           Reserve your seat <ArrowRight weight="bold" aria-hidden="true" />
