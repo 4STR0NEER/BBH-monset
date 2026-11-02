@@ -41,6 +41,27 @@ typography:
     fontWeight: 600
     lineHeight: 1.2
     letterSpacing: "-0.02em"
+  heading-5:
+    fontFamily: "Geist Variable, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "1.5rem"
+    fontWeight: 600
+    lineHeight: 1.33
+    letterSpacing: "-0.015em"
+  heading-6:
+    fontFamily: "Geist Variable, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "1.25rem"
+    fontWeight: 600
+    lineHeight: 1.4
+  title-4:
+    fontFamily: "Geist Variable, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "0.875rem"
+    fontWeight: 500
+    lineHeight: 1.43
+  body-6:
+    fontFamily: "Geist Variable, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "0.875rem"
+    fontWeight: 400
+    lineHeight: 1.43
   title-2:
     fontFamily: "Geist Variable, ui-sans-serif, system-ui, sans-serif"
     fontSize: "1.125rem"
@@ -62,6 +83,7 @@ typography:
     fontWeight: 500
     lineHeight: 1.56
 rounded:
+  focus: "6px"
   field: "12px"
   plate: "16px"
   card: "28px"
