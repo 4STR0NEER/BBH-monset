@@ -2,7 +2,8 @@ import { ArrowRight, CalendarCheck, Handshake, Megaphone, Newspaper, Plus } from
 import Table from "../components/Table.jsx";
 import { Reveal, Sample, TaglineReveal, fmtDate, fmtTime } from "../components/ui.jsx";
 import { Link } from "../lib/router.jsx";
-import { AGENDA, AGENDA_END, BOARD_PREVIEW, NEXT_BREAKFAST, SEATS } from "../data/sample.js";
+import { seatsFor, useUser } from "../lib/api.js";
+import { AGENDA, AGENDA_END, BOARD_PREVIEW, NEXT_BREAKFAST } from "../data/sample.js";
 
 const nb = NEXT_BREAKFAST;
 const seatsLeft = nb.seatsTotal - nb.seatsTaken;
@@ -28,6 +29,7 @@ export default function Home() {
 }
 
 function Hero() {
+  const user = useUser();
   return (
     <section id="table" className="relative overflow-x-clip px-4 pt-28 pb-16 md:pt-32 md:pb-24">
       <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
@@ -41,12 +43,25 @@ function Hero() {
             what the table is working on.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-4">
-            <Link to="/join" className="btn btn-primary button-lg px-6 py-3">
-              Reserve your seat <ArrowRight weight="bold" aria-hidden="true" />
-            </Link>
-            <Link to="/join?mode=signin" className="title-3 text-cobalt-deep underline">
-              Already a member? Take your seat
-            </Link>
+            {user ? (
+              <>
+                <Link to="/board" className="btn btn-primary button-lg px-6 py-3">
+                  Go to the board <ArrowRight weight="bold" aria-hidden="true" />
+                </Link>
+                <Link to="/join" className="title-3 text-cobalt-deep underline">
+                  {user.seat != null ? `You're in seat ${user.seat + 1}. See your card` : "See your card"}
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link to="/join" className="btn btn-primary button-lg px-6 py-3">
+                  Reserve your seat <ArrowRight weight="bold" aria-hidden="true" />
+                </Link>
+                <Link to="/join?mode=signin" className="title-3 text-cobalt-deep underline">
+                  Already a member? Take your seat
+                </Link>
+              </>
+            )}
           </div>
 
           {/* proof: the next breakfast, as a small enamel plate */}
@@ -65,7 +80,7 @@ function Hero() {
         </div>
 
         <div className="relative -mx-4 w-[calc(100%+2rem)] max-w-[600px] sm:mx-auto sm:w-full lg:w-[118%] lg:max-w-none lg:-mr-[18%]">
-          <Table seats={SEATS} />
+          <Table seats={seatsFor(user)} />
           <p className="caption-5 mt-2 text-center text-ink-2">Tap a seat to see who sits there. The red ones are open.</p>
         </div>
       </div>

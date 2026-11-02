@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { Link } from "../lib/router.jsx";
 import { Logo } from "./ui.jsx";
+import { useUser } from "../lib/api.js";
 
 const LINKS = [
   { to: "/#table", label: "The table" },
@@ -15,6 +16,8 @@ const EASE = [0.22, 1, 0.36, 1];
 export default function Nav() {
   const [open, setOpen] = useState(false);
   const reduce = useReducedMotion();
+  const user = useUser();
+  const links = user ? LINKS.filter((l) => l.to !== "/#board") : LINKS; // members get the real board link
 
   useEffect(() => {
     if (!open) return;
@@ -34,7 +37,7 @@ export default function Nav() {
           <Logo />
         </Link>
         <ul className="hidden items-center gap-1 md:flex">
-          {LINKS.map((l) => (
+          {links.map((l) => (
             <li key={l.to}>
               <Link to={l.to} className="title-4 rounded-full px-3 py-2 text-ink-2 transition-colors duration-300 hover:bg-enamel-2 hover:text-ink">
                 {l.label}
@@ -42,12 +45,28 @@ export default function Nav() {
             </li>
           ))}
         </ul>
-        <Link to="/join?mode=signin" className="title-4 hidden rounded-full px-3 py-2 text-cobalt-deep hover:underline sm:inline-flex">
-          Take your seat
-        </Link>
-        <Link to="/join" className="btn btn-primary button-sm px-4 py-2">
-          Reserve a seat
-        </Link>
+        {user ? (
+          <>
+            <Link to="/board" className="title-4 hidden rounded-full px-3 py-2 text-cobalt-deep hover:underline sm:inline-flex">
+              The board
+            </Link>
+            <Link to="/join" className="btn btn-plain button-sm gap-2 py-1 pr-3 pl-1" aria-label={`Your member card, ${user.name}`}>
+              <span className="grid size-7 place-items-center rounded-full bg-kettle text-xs text-enamel" aria-hidden="true">
+                {user.name.split(" ").map((w) => w[0]).join("").slice(0, 2)}
+              </span>
+              Your card
+            </Link>
+          </>
+        ) : (
+          <>
+            <Link to="/join?mode=signin" className="title-4 hidden rounded-full px-3 py-2 text-cobalt-deep hover:underline sm:inline-flex">
+              Take your seat
+            </Link>
+            <Link to="/join" className="btn btn-primary button-sm px-4 py-2">
+              Reserve a seat
+            </Link>
+          </>
+        )}
         <button
           type="button"
           className="relative grid size-10 place-items-center rounded-full text-cobalt-deep md:hidden"
@@ -77,7 +96,7 @@ export default function Nav() {
             transition={{ duration: 0.3, ease: EASE }}
           >
             <ul className="flex flex-col gap-2">
-              {[...LINKS, { to: "/join?mode=signin", label: "Take your seat" }].map((l, i) => (
+              {[...links, user ? { to: "/board", label: "The board" } : { to: "/join?mode=signin", label: "Take your seat" }].map((l, i) => (
                 <motion.li
                   key={l.to}
                   initial={{ opacity: 0, y: reduce ? 0 : 24 }}

@@ -3,9 +3,10 @@ import Nav from "./components/Nav.jsx";
 import { Logo } from "./components/ui.jsx";
 import Home from "./pages/Home.jsx";
 import Join from "./pages/Join.jsx";
+import Board from "./pages/Board.jsx";
 import { Link, usePath } from "./lib/router.jsx";
 
-const PAGES = { "/": Home, "/join": Join };
+const PAGES = { "/": Home, "/join": Join, "/board": Board };
 
 export default function App() {
   const path = usePath();

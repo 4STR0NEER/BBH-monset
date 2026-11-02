@@ -10,7 +10,8 @@ const C = S / 2;
 const polar = (r, a) => [C + r * Math.cos(a), C + r * Math.sin(a)];
 const initials = (n) => n.split(" ").map((w) => w[0]).join("").slice(0, 2);
 
-export default function Table({ seats, className = "" }) {
+export default function Table({ seats, onPick, className = "" }) {
+  const pick = (i) => (onPick ? onPick(i) : navigate(`/join?seat=${i + 1}`));
   const [active, setActive] = useState(null);
   const step = (Math.PI * 2) / seats.length;
   const angleOf = (i) => -Math.PI / 2 + step * i + step / 2;
@@ -47,7 +48,7 @@ export default function Table({ seats, className = "" }) {
               </g>
               {!open && (
                 <g>
-                  <circle cx={x} cy={y} r="19" fill="#142b78" />
+                  <circle cx={x} cy={y} r="19" fill={s.you ? "#c6361d" : "#142b78"} />
                   <text x={x} y={y + 5} textAnchor="middle" fontSize="14" fontWeight="600" fill="#fbfcfd" letterSpacing=".04em">
                     {initials(s.name)}
                   </text>
@@ -110,7 +111,7 @@ export default function Table({ seats, className = "" }) {
         {/* hit areas: one per seat, over chair and plate */}
         {seats.map((s, i) => {
           const [hx, hy] = polar(212, angleOf(i));
-          const label = s ? `${s.name}, ${s.business}, ${s.area}. Sample member.` : `Open seat ${i + 1}. Reserve it.`;
+          const label = s ? `${s.you ? "Your seat" : s.name}, ${s.business}, ${s.area}.${s.you ? "" : " Sample member."}` : `Open seat ${i + 1}. ${onPick ? "Choose it." : "Reserve it."}`;
           return (
             <circle
               key={`hit${i}`}
@@ -126,11 +127,11 @@ export default function Table({ seats, className = "" }) {
               onPointerLeave={() => setActive(null)}
               onFocus={() => setActive(i)}
               onBlur={() => setActive(null)}
-              onClick={() => (s ? setActive(i) : navigate(`/join?seat=${i + 1}`))}
+              onClick={() => (s && !s.you ? setActive(i) : pick(i))}
               onKeyDown={(e) => {
-                if ((e.key === "Enter" || e.key === " ") && !s) {
+                if ((e.key === "Enter" || e.key === " ") && (!s || s.you)) {
                   e.preventDefault();
-                  navigate(`/join?seat=${i + 1}`);
+                  pick(i);
                 }
               }}
             />
@@ -150,16 +151,16 @@ export default function Table({ seats, className = "" }) {
         >
           {tip ? (
             <>
-              <p className="title-4 text-ink">{tip.name}</p>
+              <p className="title-4 text-ink">{tip.you ? `You, ${tip.name}` : tip.name}</p>
               <p className="caption-5 text-ink-2">
                 {tip.business} · {tip.area}
               </p>
-              <p className="caption-3 mt-1 text-cobalt">Sample member</p>
+              <p className={`caption-3 mt-1 ${tip.you ? "text-kettle-deep" : "text-cobalt"}`}>{tip.you ? "Your seat" : "Sample member"}</p>
             </>
           ) : (
             <>
               <p className="title-4 text-kettle-deep">This seat is open</p>
-              <p className="caption-5 text-ink-2">Tap to reserve it</p>
+              <p className="caption-5 text-ink-2">{onPick ? "Tap to sit here" : "Tap to reserve it"}</p>
             </>
           )}
         </div>
