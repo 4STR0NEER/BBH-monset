@@ -128,7 +128,7 @@ function Register({ initialSeat, onDone }) {
             <button type="submit" className="btn btn-primary button-md px-5 py-2.5">
               Next: pick your seat <ArrowRight weight="bold" aria-hidden="true" />
             </button>
-            <Link to="/join?mode=signin" className="title-4 text-cobalt-deep underline">
+            <Link to="/join?mode=signin" className="title-4 text-ink underline">
               Already have a seat? Sign in
             </Link>
           </div>
@@ -137,7 +137,7 @@ function Register({ initialSeat, onDone }) {
         <div>
           <Table seats={seats} onPick={(i) => setCard((c) => ({ ...c, seat: i }))} className="mx-auto max-w-[480px]" />
           {failed && (
-            <p role="alert" className="body-6 enamel mt-6 rounded-xl border-kettle px-4 py-3 text-kettle-deep">
+            <p role="alert" className="body-6 surface mt-6 rounded-xl border-rust px-4 py-3 text-rust">
               {failed}
             </p>
           )}
@@ -145,7 +145,7 @@ function Register({ initialSeat, onDone }) {
             <button type="button" onClick={reserve} disabled={busy || card.seat == null} className="btn btn-primary button-md px-5 py-2.5">
               {busy ? "Setting your place…" : card.seat == null ? "Pick an open seat" : `Reserve seat ${card.seat + 1}`}
             </button>
-            <button type="button" onClick={() => setStep(1)} className="title-4 inline-flex items-center gap-1 rounded-full text-cobalt-deep hover:underline">
+            <button type="button" onClick={() => setStep(1)} className="title-4 inline-flex items-center gap-1 rounded-full text-ink hover:underline">
               <ArrowLeft weight="bold" aria-hidden="true" /> Edit my card
             </button>
           </div>
@@ -192,7 +192,7 @@ function SignIn({ onDone }) {
           <input type="password" value={form.password} onChange={set("password")} autoComplete="current-password" />
         </Field>
         {failed && (
-          <p role="alert" className="body-6 enamel rounded-xl border-kettle px-4 py-3 text-kettle-deep">
+          <p role="alert" className="body-6 surface rounded-xl border-rust px-4 py-3 text-rust">
             {failed}
           </p>
         )}
@@ -200,7 +200,7 @@ function SignIn({ onDone }) {
           <button type="submit" disabled={busy} className="btn btn-primary button-md px-5 py-2.5">
             {busy ? "Finding your seat…" : "Take my seat"}
           </button>
-          <Link to="/join" className="title-4 text-cobalt-deep underline">
+          <Link to="/join" className="title-4 text-ink underline">
             New here? Reserve a seat
           </Link>
         </div>
@@ -262,10 +262,10 @@ function Shell({ title, lede, step, card, children }) {
           {step && (
             <ol className="mb-6 flex items-center gap-2" aria-label={`Step ${step} of 2`}>
               {["Place card", "Seat"].map((s, i) => (
-                <li key={s} className={`caption-3 flex items-center gap-2 ${i + 1 <= step ? "text-cobalt-deep" : "text-ink-2"}`}>
-                  <span className={`tnum grid size-6 place-items-center rounded-full border-2 font-mono ${i + 1 < step ? "border-cobalt bg-cobalt text-enamel" : i + 1 === step ? "border-kettle text-kettle-deep" : "border-cobalt-soft"}`}>{i + 1}</span>
+                <li key={s} className={`caption-3 flex items-center gap-2 ${i + 1 <= step ? "text-ink" : "text-ink-2"}`}>
+                  <span className={`tnum grid size-6 place-items-center rounded-full border font-mono ${i + 1 < step ? "border-ink bg-ink text-paper" : i + 1 === step ? "border-rust text-rust" : "border-line"}`}>{i + 1}</span>
                   {s}
-                  {i === 0 && <span className="h-0.5 w-8 rounded-full bg-cobalt-soft" aria-hidden="true" />}
+                  {i === 0 && <span className="h-0.5 w-8 rounded-full bg-line" aria-hidden="true" />}
                 </li>
               ))}
             </ol>
@@ -294,12 +294,12 @@ function Field({ id, label, hint, error, className = "", children }) {
         "aria-invalid": !!error || undefined,
         "aria-describedby": error || hint ? msg : undefined,
         className:
-          "body-3 mt-1.5 block h-12 w-full rounded-xl border-2 border-cobalt-soft bg-enamel px-3 text-ink shadow-[inset_0_2px_0_#fff] transition-colors duration-200 placeholder:text-ink-2/75 hover:border-cobalt/60 focus:border-cobalt focus-visible:outline-offset-2 aria-invalid:border-kettle appearance-none",
+          "body-3 mt-1.5 block h-12 w-full rounded-xl border border-line bg-paper px-3 text-ink shadow-[inset_0_2px_0_#fff] transition-colors duration-200 placeholder:text-ink-2/75 hover:border-ink/60 focus:border-ink focus-visible:outline-offset-2 aria-invalid:border-rust appearance-none",
       })}
-      {children.type === "select" && <CaretDown size={16} weight="bold" aria-hidden="true" className="pointer-events-none absolute top-1/2 right-3 mt-[3px] -translate-y-1/2 text-cobalt" />}
+      {children.type === "select" && <CaretDown size={16} weight="bold" aria-hidden="true" className="pointer-events-none absolute top-1/2 right-3 mt-[3px] -translate-y-1/2 text-ochre-ink" />}
       </div>
       {(error || hint) && (
-        <p id={msg} className={`caption-5 mt-1.5 ${error ? "text-kettle-deep" : "text-ink-2"}`}>
+        <p id={msg} className={`caption-5 mt-1.5 ${error ? "text-rust" : "text-ink-2"}`}>
           {error || hint}
         </p>
       )}

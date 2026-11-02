@@ -38,7 +38,7 @@ export default function Legal({ kind }) {
       <div className="mx-auto max-w-[680px]">
         <h1 className="heading-3 md:heading-2 text-ink">{doc.title}</h1>
         <p className="caption-5 mt-3 text-ink-2">Last updated {doc.updated}</p>
-        <p className="body-6 enamel mt-6 rounded-xl px-4 py-3 text-ink-2">Draft for the BBH organisers to review before launch. It's written in plain language and isn't legal advice.</p>
+        <p className="body-6 surface mt-6 rounded-xl px-4 py-3 text-ink-2">Draft for the BBH organisers to review before launch. It's written in plain language and isn't legal advice.</p>
         {doc.sections.map(([h, p]) => (
           <section key={h} className="mt-10">
             <h2 className="heading-6 text-ink">{h}</h2>
@@ -47,7 +47,7 @@ export default function Legal({ kind }) {
               {h === "Contact" && (
                 <>
                   {" "}
-                  <a href={FB} target="_blank" rel="noreferrer" className="text-cobalt-deep underline">
+                  <a href={FB} target="_blank" rel="noreferrer" className="text-ink underline">
                     facebook.com/adminBBH
                   </a>
                 </>

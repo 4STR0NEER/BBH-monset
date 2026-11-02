@@ -43,7 +43,10 @@ The breakfast table is the product. A member is someone with a seat at the table
 ## Brand Commitments
 
 - Cebu identity is required. The brand should feel rooted in Cebu, not generic Manila or Silicon Valley.
-- No logo, colours or brand assets were supplied, so all of these are open.
+- BBH's own palette is yellow ochre and black. The user confirmed this on 2026-11-02 and it's binding.
+- Logo: "BBH" set in a condensed sans serif inside a rounded square drawn in orange or ochre line. No logo file has been supplied yet; the site recreates it.
+- Feel: sophisticated and casual. The user rejected the first, enamelware build as too cartoony and pop art.
+- The hero table uses a real photo with interactive seat markers (user's choice). The current photo is a stand-in from Unsplash until BBH has its own.
 
 ## Evidence on Hand
 

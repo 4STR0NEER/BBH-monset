@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, animate, motion, useMotionValue, useReducedMotion, useTransform } from "motion/react";
 
 // Adapted from Kokonut UI's Hold Button (MIT, github.com/kokonut-labs/kokonutui, @dorianbaffier).
-// Changes: JSX, one enamel style instead of five cva variants, icon passed in, no cn/lucide.
+// Changes: JSX, one surface style instead of five cva variants, icon passed in, no cn/lucide.
 // Press and hold to confirm; an early release drains the fill back. Used for giving up a seat,
 // so a stray tap can't cost someone their chair.
 
@@ -53,7 +53,7 @@ export default function HoldButton({ children, holdingLabel = "Keep holding", co
       type="button"
       disabled={disabled}
       data-complete={phase === "complete" || undefined}
-      className={`group relative inline-flex h-11 min-w-48 touch-none items-center justify-center overflow-hidden rounded-full border-2 border-kettle bg-enamel px-4 text-kettle-deep select-none [-webkit-touch-callout:none] transition-colors duration-200 disabled:opacity-50 data-complete:bg-kettle data-complete:text-enamel ${className}`}
+      className={`group relative inline-flex h-11 min-w-48 touch-none items-center justify-center overflow-hidden rounded-full border-[1.5px] border-current/40 bg-transparent px-4 select-none [-webkit-touch-callout:none] transition-colors duration-200 disabled:opacity-50 data-complete:border-ochre data-complete:bg-ochre data-complete:text-ink ${className}`}
       onPointerDown={(e) => {
         if (e.button !== 0) return;
         if (e.currentTarget.hasPointerCapture(e.pointerId)) e.currentTarget.releasePointerCapture(e.pointerId);
@@ -70,7 +70,7 @@ export default function HoldButton({ children, holdingLabel = "Keep holding", co
       }}
       onKeyUp={(e) => HOLD_KEYS.has(e.key) && end()}
     >
-      <motion.span aria-hidden="true" className="pointer-events-none absolute inset-0 bg-kettle/15 group-data-complete:opacity-0" style={{ clipPath }} />
+      <motion.span aria-hidden="true" className="pointer-events-none absolute inset-0 bg-current/15 group-data-complete:opacity-0" style={{ clipPath }} />
       <span className="button-sm relative flex items-center overflow-hidden">
         <AnimatePresence initial={false} mode="popLayout">
           <motion.span

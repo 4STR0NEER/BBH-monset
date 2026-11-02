@@ -1,23 +1,23 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-02T17:30:00+08:00",
+  "generatedAt": "2026-11-02T23:00:00+08:00",
   "title": "Design System: Business Breakfast Hub",
   "extensions": {
     "colorMeta": {
-      "enamel": { "role": "neutral", "displayName": "Enamel Glaze", "tonalRamp": ["#1b2230", "#343d4d", "#58627a", "#8792a8", "#b9c2d2", "#dde4ee", "#eef2f7", "#fbfcfd"] },
-      "cobalt": { "role": "primary", "displayName": "Cobalt Rim", "tonalRamp": ["#0b1640", "#142b78", "#1f3fa3", "#3b5bc0", "#6a84d4", "#9cb0e4", "#c9d4f0", "#eef2fb"] },
-      "kettle": { "role": "secondary", "displayName": "Kettle Red", "tonalRamp": ["#3d0d05", "#6e1b0c", "#a42a14", "#c6361d", "#dd5c43", "#ea8d7b", "#f4bfb4", "#fbe9e5"] },
-      "celadon": { "role": "tertiary", "displayName": "Celadon", "tonalRamp": ["#14231e", "#26413a", "#3c6b5c", "#5f8f7f", "#84ad9f", "#a9c8bd", "#cfe2db", "#eef6f3"] },
-      "ink": { "role": "neutral", "displayName": "Cobalt Ink" },
-      "chip-steel": { "role": "neutral", "displayName": "Chip Steel" }
+      "ochre": { "role": "primary", "displayName": "BBH Ochre", "tonalRamp": ["#3a2706", "#6b480b", "#a9761a", "#d39b2a", "#e0b354", "#ebcb86", "#f1dfb4", "#faf2de"] },
+      "ink": { "role": "secondary", "displayName": "Black Coffee", "tonalRamp": ["#15130f", "#1d1b17", "#2b2823", "#514c43", "#7d776c", "#aaa497", "#d9d6cb", "#f5f4ef"] },
+      "paper": { "role": "neutral", "displayName": "Paper" },
+      "rust": { "role": "error", "displayName": "Rust" }
     },
     "typographyMeta": {
       "heading-1": { "displayName": "Heading 1", "purpose": "Hero headline only." },
-      "numerals": { "displayName": "Numerals", "purpose": "Times, counts, dates in data, member numbers. Tabular." }
+      "numerals": { "displayName": "Numerals", "purpose": "Times, counts, dates in data, member numbers. Tabular." },
+      "mark": { "displayName": "Mark", "purpose": "The BBH letters inside the rounded ochre square. Nowhere else." }
     },
     "shadows": [
-      { "name": "glaze", "value": "inset 0 2px 0 #fff, inset 0 -8px 16px -10px rgb(20 43 120 / .18), 0 14px 28px -16px rgb(16 25 46 / .4)", "purpose": "Every enamel surface." },
-      { "name": "kettle-lift", "value": "inset 0 2px 0 rgb(255 255 255 / .28), 0 8px 18px -10px rgb(164 42 20 / .7)", "purpose": "Primary button." }
+      { "name": "raised", "value": "0 1px 2px rgb(21 19 15 / .04), 0 18px 40px -24px rgb(21 19 15 / .28)", "purpose": "Cards and tooltips on paper." },
+      { "name": "panel", "value": "0 24px 48px -28px rgb(21 19 15 / .6)", "purpose": "Black panels." },
+      { "name": "photo", "value": "0 30px 60px -30px rgb(21 19 15 / .45)", "purpose": "The hero photo on the ochre field." }
     ],
     "motion": [
       { "name": "ease-out", "value": "cubic-bezier(0.22, 1, 0.36, 1)", "purpose": "Entrances, reveals, hovers, counter roll." },
@@ -36,88 +36,88 @@
       "name": "Primary Button",
       "kind": "button",
       "refersTo": "button-primary",
-      "description": "Kettle red enamel pill for the one primary action on a screen.",
-      "html": "<button class=\"ds-btn-primary\">Reserve your seat</button>",
-      "css": ".ds-btn-primary { background: #c6361d; color: #fbfcfd; border: 2px solid #a42a14; border-radius: 9999px; padding: 10px 20px; font: 600 16px/24px 'Geist Variable', system-ui, sans-serif; box-shadow: inset 0 2px 0 rgb(255 255 255 / .28), 0 8px 18px -10px rgb(164 42 20 / .7); transition: transform 160ms cubic-bezier(0.22,1,0.36,1), background-color 200ms cubic-bezier(0.22,1,0.36,1); cursor: pointer; } .ds-btn-primary:hover { background: #a42a14; } .ds-btn-primary:active { transform: scale(0.97); } .ds-btn-primary:focus-visible { outline: 3px solid #1f3fa3; outline-offset: 3px; }"
+      "description": "Black pill for the one primary action on paper or ochre.",
+      "html": "<button class=\"ds-btn\">Reserve your seat</button>",
+      "css": ".ds-btn { background: #15130f; color: #f5f4ef; border: 1.5px solid transparent; border-radius: 9999px; padding: 10px 20px; font: 500 16px/24px 'Geist Variable', system-ui, sans-serif; transition: transform 160ms cubic-bezier(0.22,1,0.36,1), background-color 200ms; cursor: pointer; } .ds-btn:hover { background: #2b2823; } .ds-btn:active { transform: scale(0.97); } .ds-btn:focus-visible { outline: 2px solid #15130f; outline-offset: 3px; }"
     },
     {
-      "name": "Plain Button",
+      "name": "Ochre Button",
       "kind": "button",
-      "refersTo": "button-plain",
-      "description": "Cobalt-rimmed enamel pill for secondary actions.",
-      "html": "<button class=\"ds-btn-plain\">Back to the table</button>",
-      "css": ".ds-btn-plain { background: #fbfcfd; color: #142b78; border: 2px solid #1f3fa3; border-radius: 9999px; padding: 10px 20px; font: 600 16px/24px 'Geist Variable', system-ui, sans-serif; box-shadow: inset 0 2px 0 #fff; transition: transform 160ms cubic-bezier(0.22,1,0.36,1), background-color 200ms cubic-bezier(0.22,1,0.36,1); cursor: pointer; } .ds-btn-plain:hover { background: #eef2f7; } .ds-btn-plain:active { transform: scale(0.97); } .ds-btn-plain:focus-visible { outline: 3px solid #1f3fa3; outline-offset: 3px; }"
+      "refersTo": "button-ochre",
+      "description": "The primary action when it sits on a black panel.",
+      "html": "<button class=\"ds-btn-ochre\">Reserve a seat to read the board</button>",
+      "css": ".ds-btn-ochre { background: #d39b2a; color: #15130f; border: 0; border-radius: 9999px; padding: 10px 20px; font: 500 16px/24px 'Geist Variable', system-ui, sans-serif; transition: transform 160ms cubic-bezier(0.22,1,0.36,1), background-color 200ms; cursor: pointer; } .ds-btn-ochre:hover { background: #a9761a; } .ds-btn-ochre:active { transform: scale(0.97); } .ds-btn-ochre:focus-visible { outline: 2px solid #f5f4ef; outline-offset: 3px; }"
     },
     {
       "name": "Field",
       "kind": "input",
       "refersTo": "input",
-      "description": "48px enamel field; cobalt on focus, kettle when invalid.",
+      "description": "48px paper field with a hairline; ink on focus, rust when invalid.",
       "html": "<label class=\"ds-label\">Business name<input class=\"ds-input\" placeholder=\"Lim Builders Supply\"></label>",
-      "css": ".ds-label { display: block; font: 500 14px/20px 'Geist Variable', system-ui, sans-serif; color: #10192e; } .ds-input { display: block; margin-top: 6px; width: 100%; height: 48px; padding: 0 12px; border: 2px solid #c9d4f0; border-radius: 12px; background: #fbfcfd; color: #10192e; font: 400 16px/24px 'Geist Variable', system-ui, sans-serif; box-shadow: inset 0 2px 0 #fff; caret-color: #c6361d; transition: border-color 200ms; } .ds-input::placeholder { color: rgb(58 71 99 / .75); } .ds-input:hover { border-color: rgb(31 63 163 / .6); } .ds-input:focus { border-color: #1f3fa3; outline: 3px solid #1f3fa3; outline-offset: 2px; } .ds-input[aria-invalid=true] { border-color: #c6361d; }"
+      "css": ".ds-label { display: block; font: 500 14px/20px 'Geist Variable', system-ui, sans-serif; color: #15130f; } .ds-input { display: block; margin-top: 6px; width: 100%; height: 48px; padding: 0 12px; border: 1px solid #d9d6cb; border-radius: 12px; background: #f5f4ef; color: #15130f; font: 400 16px/24px 'Geist Variable', system-ui, sans-serif; caret-color: #a9761a; transition: border-color 200ms; } .ds-input::placeholder { color: rgb(81 76 67 / .75); } .ds-input:focus { border-color: #15130f; outline: 2px solid #15130f; outline-offset: 2px; } .ds-input[aria-invalid=true] { border-color: #a8321f; }"
     },
     {
       "name": "Filter Pill",
       "kind": "chip",
-      "refersTo": "chip-filter-active",
-      "description": "News filters and board section pills; solid cobalt when active.",
+      "refersTo": "pill-active",
+      "description": "News filters and board section pills; solid ink when active.",
       "html": "<div class=\"ds-pills\"><button class=\"ds-pill\" aria-pressed=\"true\">All</button><button class=\"ds-pill\" aria-pressed=\"false\">Members</button></div>",
-      "css": ".ds-pills { display: flex; gap: 4px; } .ds-pill { border: 2px solid #c9d4f0; border-radius: 9999px; padding: 6px 12px; background: transparent; color: #3a4763; font: 600 12px/16px 'Geist Variable', system-ui, sans-serif; transition: background-color 200ms; cursor: pointer; } .ds-pill:hover { border-color: #1f3fa3; } .ds-pill[aria-pressed=true] { background: #1f3fa3; border-color: #1f3fa3; color: #fbfcfd; } .ds-pill:active { transform: scale(0.97); } .ds-pill:focus-visible { outline: 3px solid #1f3fa3; outline-offset: 3px; }"
+      "css": ".ds-pills { display: flex; gap: 4px; } .ds-pill { border: 1px solid #d9d6cb; border-radius: 9999px; padding: 6px 12px; background: transparent; color: #514c43; font: 600 12px/16px 'Geist Variable', system-ui, sans-serif; cursor: pointer; } .ds-pill:hover { border-color: #15130f; } .ds-pill[aria-pressed=true] { background: #15130f; border-color: #15130f; color: #f5f4ef; } .ds-pill:focus-visible { outline: 2px solid #15130f; outline-offset: 3px; }"
     },
     {
-      "name": "Enamel Plate",
+      "name": "Surface Card",
       "kind": "card",
-      "refersTo": "enamel-plate",
-      "description": "The base surface: glaze, full cobalt rim, top highlight, soft weight, a chip on the rim.",
-      "html": "<div class=\"ds-plate\"><p class=\"ds-plate-t\">Next breakfast · Thu, Nov 5 · 6:30 AM</p><p class=\"ds-plate-s\">Sample venue, Cebu IT Park</p></div>",
-      "css": ".ds-plate { position: relative; background: #fbfcfd; border: 3px solid #1f3fa3; border-radius: 16px; padding: 12px 16px; box-shadow: inset 0 2px 0 #fff, inset 0 -8px 16px -10px rgb(20 43 120 / .18), 0 14px 28px -16px rgb(16 25 46 / .4); font-family: 'Geist Variable', system-ui, sans-serif; } .ds-plate::after { content: ''; position: absolute; right: -3px; top: 22%; width: 12px; height: 9px; border-radius: 40% 60% 50% 50%; background: #15171c; } .ds-plate-t { margin: 0; font: 500 14px/20px inherit; color: #10192e; } .ds-plate-s { margin: 0; font: 400 12px/16px inherit; color: #3a4763; }"
+      "refersTo": "surface",
+      "description": "Raised paper card with a hairline and a long soft shadow.",
+      "html": "<div class=\"ds-card\"><p class=\"ds-card-t\">Next breakfast · Thu, Nov 5 · 6:30 AM</p><p class=\"ds-card-s\">Sample venue, Cebu IT Park</p></div>",
+      "css": ".ds-card { background: #fbfaf7; border: 1px solid #d9d6cb; border-radius: 16px; padding: 12px 16px; box-shadow: 0 1px 2px rgb(21 19 15 / .04), 0 18px 40px -24px rgb(21 19 15 / .28); font-family: 'Geist Variable', system-ui, sans-serif; } .ds-card-t { margin: 0; font: 500 14px/20px inherit; color: #15130f; } .ds-card-s { margin: 0; font: 400 12px/16px inherit; color: #514c43; }"
     },
     {
-      "name": "Cobalt Sign",
+      "name": "Dark Panel",
       "kind": "card",
-      "refersTo": "cobalt-sign",
-      "description": "Cobalt enamel with a white inner rim line, for the one important panel on a page.",
-      "html": "<div class=\"ds-sign\"><p class=\"ds-sign-k\">Seats open</p><p class=\"ds-sign-n\">4</p></div>",
-      "css": ".ds-sign { background: #1f3fa3; color: #fbfcfd; border: 3px solid #142b78; border-radius: 32px; padding: 40px; box-shadow: inset 0 2px 0 rgb(255 255 255 / .18), inset 0 0 0 5px #1f3fa3, inset 0 0 0 7px rgb(251 252 253 / .85), 0 18px 36px -18px rgb(16 25 46 / .55); font-family: 'Geist Variable', system-ui, sans-serif; } .ds-sign-k { margin: 0; font: 500 14px/20px inherit; color: #c9d4f0; } .ds-sign-n { margin: 8px 0 0; font: 500 96px/1 'Geist Mono Variable', ui-monospace, monospace; font-variant-numeric: tabular-nums; }"
+      "refersTo": "panel-dark",
+      "description": "Coal panel for the board sign, member card and footer.",
+      "html": "<div class=\"ds-panel\"><p class=\"ds-panel-k\">Seats open</p><p class=\"ds-panel-n\">4</p></div>",
+      "css": ".ds-panel { background: #1d1b17; color: #f5f4ef; border: 1px solid #2b2823; border-radius: 32px; padding: 40px; box-shadow: 0 24px 48px -28px rgb(21 19 15 / .6); font-family: 'Geist Variable', system-ui, sans-serif; } .ds-panel-k { margin: 0; font: 500 14px/20px inherit; color: rgb(245 244 239 / .7); } .ds-panel-n { margin: 8px 0 0; color: #d39b2a; font: 500 96px/1 'Geist Mono Variable', ui-monospace, monospace; font-variant-numeric: tabular-nums; }"
     },
     {
-      "name": "Floating Nav",
-      "kind": "nav",
-      "refersTo": "enamel-plate",
-      "description": "Enamel pill nav floating off the top edge.",
-      "html": "<nav class=\"ds-nav\"><b class=\"ds-nav-logo\">BBH</b><a class=\"ds-nav-a\" href=\"#\">The table</a><a class=\"ds-nav-a\" href=\"#\">Questions</a><a class=\"ds-nav-cta\" href=\"#\">Reserve a seat</a></nav>",
-      "css": ".ds-nav { display: flex; align-items: center; gap: 4px; padding: 6px 6px 6px 16px; background: rgb(251 252 253 / .9); backdrop-filter: blur(12px); border: 3px solid #1f3fa3; border-radius: 9999px; box-shadow: inset 0 2px 0 #fff, 0 14px 28px -16px rgb(16 25 46 / .4); font-family: 'Geist Variable', system-ui, sans-serif; } .ds-nav-logo { margin-right: auto; color: #142b78; } .ds-nav-a { padding: 8px 12px; border-radius: 9999px; color: #3a4763; font: 500 14px/20px inherit; text-decoration: none; transition: background-color 300ms; } .ds-nav-a:hover { background: #eef2f7; color: #10192e; } .ds-nav-cta { padding: 8px 16px; border-radius: 9999px; background: #c6361d; color: #fbfcfd; font: 600 14px/20px inherit; text-decoration: none; }"
+      "name": "BBH Mark",
+      "kind": "custom",
+      "refersTo": "mark",
+      "description": "BBH in a condensed sans inside a rounded ochre line square.",
+      "html": "<span class=\"ds-mark\">BBH</span>",
+      "css": ".ds-mark { display: inline-grid; place-items: center; width: 36px; height: 36px; box-sizing: border-box; border: 2px solid #d39b2a; border-radius: 10px; font: 600 15px/1 'Barlow Condensed', 'Arial Narrow', sans-serif; letter-spacing: .02em; color: #15130f; }"
     }
   ],
   "narrative": {
-    "northStar": "The Breakfast Table, Fired in Enamel",
-    "overview": "The site is built from peltre, the white enamel mugs and plates with a cobalt rim that sit on every Filipino breakfast table. Every big surface is a piece of that enamelware: cool white glaze, a cobalt rim drawn as a real border, a highlight along the top edge, soft weight underneath, a little speckle fired into the glaze, and the odd chip where bare steel shows. One tomato red, the colour of the enamel kettle, is kept for the single action that matters on each screen.\n\nThe table is the interface. The landing hero is a round cobalt table seen from above, with one plate per seat. Signing up fills in a place card that turns over into an enamel member card. On the board, seat counts change by rolling like a counter drum.",
+    "northStar": "Ochre Morning, Black Coffee",
+    "overview": "BBH's own colours lead: a deep yellow ochre and black. Ochre carries the big moments (the hero and the closing invitation), black carries the type, the buttons and the dark panels, and a quiet off-white ground sits between them so the page can breathe. The feel is sophisticated and casual, like a good café before opening: unfussy, warm and grown up. It's never cartoony.\n\nThe table is still the idea, but it's real. The hero is a top-down photograph of a set breakfast table, with live seat markers placed on the place settings. On `/join` the seat picker is a fine line floor plan of the table. The place card turns over into a black member card.",
     "keyCharacteristics": [
-      "Cool white enamel ground (#fbfcfd), never cream.",
-      "Cobalt rims (3px borders) on every major surface, with a cobalt enamel inversion for the important sign.",
-      "Kettle red only on the primary action and on \"you\" markers (your seat, your initials).",
-      "One typeface, Geist, with Geist Mono only for times, counts and member numbers.",
-      "Speckle and chips are a repeating unit, not one-off decoration."
+      "Big flat fields of yellow ochre with black type on them.",
+      "Black pill buttons for the primary action. On black panels the action becomes an ochre pill.",
+      "Hairline rules and soft, long shadows. No thick borders, no outlines drawn as decoration.",
+      "Geist at weight 500 for headings, Geist Mono for times and counts, and a condensed sans only inside the BBH square mark.",
+      "Real photography, plus fine line drawing where a photo can't work."
     ],
     "rules": [
-      { "name": "The One Kettle Rule", "body": "A screen has one kettle red action. Everything else is cobalt or plain enamel.", "section": "colors" },
-      { "name": "The Cool Glaze Rule", "body": "The ground is cool white enamel. Cream, parchment or warm paper grounds break the world.", "section": "colors" },
-      { "name": "The Named Style Rule", "body": "Text uses a named style class (`heading-3`, `body-6`, `caption-3`). Don't set a loose size and weight.", "section": "typography" },
-      { "name": "The Plain Copy Rule", "body": "No hyphens inside sentences and no italics. Use sentence case for headings and buttons.", "section": "typography" }
+      { "name": "The Brand Field Rule", "body": "Ochre appears as a field (a whole band or section) or as a small signal (open seat, you, the mark). It is never a mid-sized tint scattered around.", "section": "colors" },
+      { "name": "The One Black Button Rule", "body": "Each screen has one primary action, a black pill. On a black panel it inverts to an ochre pill.", "section": "colors" },
+      { "name": "The Named Style Rule", "body": "Text uses a named style class. Don't set a loose size and weight.", "section": "typography" },
+      { "name": "The Plain Copy Rule", "body": "No hyphens inside sentences, no italics, sentence case.", "section": "typography" }
     ],
     "dos": [
-      "**Do** draw every major surface as enamelware: glaze, a full cobalt rim, the top highlight, and a soft offset shadow.",
-      "**Do** keep kettle red for the single primary action and for \"you\" markers.",
-      "**Do** set times, counts and member numbers in Geist Mono with tabular numerals.",
+      "**Do** let ochre fill whole fields, with black type on them.",
+      "**Do** use real photography of tables, food and people, and credit stand-in photos.",
+      "**Do** use hairlines and space for structure.",
       "**Do** label every piece of dummy content as Sample.",
-      "**Do** give every interactive element hover, pressed (scale 0.97), visible focus, disabled and error states."
+      "**Do** give every interactive element hover, pressed (0.97), visible focus, disabled and error states."
     ],
     "donts": [
-      "**Don't** use cream, parchment or warm paper grounds.",
+      "**Don't** draw cartoon or pop-art illustrations, or use flat icon food.",
       "**Don't** use gradients on backgrounds or text.",
-      "**Don't** put kickers or eyebrow labels above headings, including uppercase brand lines above names.",
-      "**Don't** put a border on only one side of a card, or use hard offset block shadows.",
-      "**Don't** add a second typeface or use italics.",
+      "**Don't** use thick borders, coloured side borders, or hard offset shadows.",
+      "**Don't** use the condensed face outside the BBH mark, or use italics.",
+      "**Don't** put kickers or eyebrow labels above headings.",
       "**Don't** invent real BBH facts such as fees, venues, how often they meet or member counts."
     ]
   }

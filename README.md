@@ -22,8 +22,8 @@ npm run build
 | --- | --- |
 | All sample content (members, schedule, news, posts) | `src/data/sample.js` |
 | Accounts, seats and posts (the only file that knows about storage) | `src/lib/api.js` |
-| Design tokens (enamel, cobalt, kettle red) and text styles | `src/index.css`, documented in `DESIGN.md` |
-| The table, place card, rolling number, hold button | `src/components/` |
+| Design tokens (ochre, ink, paper) and text styles | `src/index.css`, documented in `DESIGN.md` |
+| Photo table, floor plan seat picker, place card, rolling number, hold button | `src/components/` |
 
 ## Before launch
 
@@ -38,4 +38,4 @@ Import the repo into Vercel. It's detected as Vite, and `vercel.json` rewrites e
 
 ## Credits
 
-`src/components/AnimatedNumber.jsx` is adapted from VengeanceUI (MIT). `src/components/HoldButton.jsx` is adapted from Kokonut UI (MIT, @dorianbaffier).
+The hero photo is by Martin Baron on Unsplash (Unsplash License), a stand-in until BBH has its own. `src/components/AnimatedNumber.jsx` is adapted from VengeanceUI (MIT). `src/components/HoldButton.jsx` is adapted from Kokonut UI (MIT, @dorianbaffier).

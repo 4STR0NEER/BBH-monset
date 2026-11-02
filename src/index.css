@@ -1,159 +1,130 @@
 @import "tailwindcss";
 @import "@fontsource-variable/geist";
 @import "@fontsource-variable/geist-mono";
+@import "@fontsource/barlow-condensed/600.css"; /* the BBH wordmark only */
 
-/* ─── Peltre enamelware: the whole site is glazed white enamel with cobalt rims ─── */
+/* ─── BBH: yellow ochre and black, on a quiet off-white. Casual, unfussy, grown up. ─── */
 @theme {
   --font-sans: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "Geist Mono Variable", ui-monospace, monospace;
+  --font-mark: "Barlow Condensed", "Arial Narrow", sans-serif;
 
-  --color-enamel: #fbfcfd; /* the glaze: cool white, never cream */
-  --color-enamel-2: #eef2f7; /* glaze in shadow */
-  --color-enamel-3: #dde4ee;
-  --color-cobalt: #1f3fa3; /* the rim */
-  --color-cobalt-deep: #142b78;
-  --color-cobalt-soft: #c9d4f0;
-  --color-ink: #10192e; /* text is cobalt-tinted near black */
-  --color-ink-2: #3a4763;
-  --color-chip: #15171c; /* bare steel where the enamel chipped */
-  --color-kettle: #c6361d; /* the red enamel kettle: primary action only */
-  --color-kettle-deep: #a42a14;
-  --color-celadon: #5f8f7f;
-  --color-kape: #4a2c1d;
-  --color-pandesal: #c98b4f;
+  --color-ochre: #d39b2a; /* BBH yellow ochre: big fields, open seats, "you" */
+  --color-ochre-deep: #a9761a; /* ochre in shade: hover, strokes on paper */
+  --color-ochre-ink: #6b480b; /* ochre as text on paper (7:1) */
+  --color-ochre-soft: #f1dfb4;
+  --color-ink: #15130f; /* black type, black buttons */
+  --color-ink-2: #514c43; /* secondary text on paper and ochre */
+  --color-coal: #1d1b17; /* black panels */
+  --color-coal-2: #2b2823;
+  --color-paper: #f5f4ef; /* page ground */
+  --color-paper-2: #eae8e0; /* hover fills, date blocks */
+  --color-raised: #fbfaf7; /* cards on paper */
+  --color-line: #d9d6cb; /* hairlines */
+  --color-rust: #a8321f; /* errors only */
 
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* Text styles (landing-page-design B1). Use these names, not loose size + weight. */
-@utility heading-1 { font-size: 3.75rem; line-height: 1; font-weight: 600; letter-spacing: -0.035em; text-wrap: balance; }
-@utility heading-2 { font-size: 3rem; line-height: 1; font-weight: 600; letter-spacing: -0.03em; text-wrap: balance; }
-@utility heading-3 { font-size: 2.25rem; line-height: 2.5rem; font-weight: 600; letter-spacing: -0.025em; text-wrap: balance; }
-@utility heading-4 { font-size: 1.875rem; line-height: 2.25rem; font-weight: 600; letter-spacing: -0.02em; text-wrap: balance; }
-@utility heading-5 { font-size: 1.5rem; line-height: 2rem; font-weight: 600; letter-spacing: -0.015em; text-wrap: balance; }
-@utility heading-6 { font-size: 1.25rem; line-height: 1.75rem; font-weight: 600; text-wrap: balance; }
+@utility heading-1 { font-size: 3.75rem; line-height: 1; font-weight: 500; letter-spacing: -0.04em; text-wrap: balance; }
+@utility heading-2 { font-size: 3rem; line-height: 1; font-weight: 500; letter-spacing: -0.035em; text-wrap: balance; }
+@utility heading-3 { font-size: 2.25rem; line-height: 2.5rem; font-weight: 500; letter-spacing: -0.03em; text-wrap: balance; }
+@utility heading-4 { font-size: 1.875rem; line-height: 2.25rem; font-weight: 500; letter-spacing: -0.025em; text-wrap: balance; }
+@utility heading-5 { font-size: 1.5rem; line-height: 2rem; font-weight: 500; letter-spacing: -0.02em; text-wrap: balance; }
+@utility heading-6 { font-size: 1.25rem; line-height: 1.75rem; font-weight: 600; letter-spacing: -0.01em; text-wrap: balance; }
 @utility title-2 { font-size: 1.125rem; line-height: 1.75rem; font-weight: 500; }
 @utility title-3 { font-size: 1rem; line-height: 1.5rem; font-weight: 500; }
 @utility title-4 { font-size: 0.875rem; line-height: 1.25rem; font-weight: 500; }
 @utility body-3 { font-size: 1rem; line-height: 1.5rem; font-weight: 400; text-wrap: pretty; }
 @utility body-2 { font-size: 1rem; line-height: 1.5rem; font-weight: 500; text-wrap: pretty; }
 @utility body-6 { font-size: 0.875rem; line-height: 1.25rem; font-weight: 400; text-wrap: pretty; }
-@utility button-lg { font-size: 1.125rem; line-height: 1.75rem; font-weight: 600; }
-@utility button-md { font-size: 1rem; line-height: 1.5rem; font-weight: 600; }
-@utility button-sm { font-size: 0.875rem; line-height: 1.25rem; font-weight: 600; }
+@utility button-lg { font-size: 1.125rem; line-height: 1.75rem; font-weight: 500; }
+@utility button-md { font-size: 1rem; line-height: 1.5rem; font-weight: 500; }
+@utility button-sm { font-size: 0.875rem; line-height: 1.25rem; font-weight: 500; }
 @utility caption-3 { font-size: 0.75rem; line-height: 1rem; font-weight: 600; }
 @utility caption-5 { font-size: 0.75rem; line-height: 1rem; font-weight: 400; }
 
-/* An enamel surface: glaze, cobalt rim, a highlight along the top edge, soft weight underneath */
-@utility enamel {
-  background-color: var(--color-enamel);
-  border: 3px solid var(--color-cobalt);
-  box-shadow:
-    inset 0 2px 0 #fff,
-    inset 0 -8px 16px -10px rgb(20 43 120 / 0.18),
-    0 14px 28px -16px rgb(16 25 46 / 0.4);
+/* A card on paper: slightly raised paper, hairline edge, soft long shadow */
+@utility surface {
+  background-color: var(--color-raised);
+  border: 1px solid var(--color-line);
+  box-shadow: 0 1px 2px rgb(21 19 15 / 0.04), 0 18px 40px -24px rgb(21 19 15 / 0.28);
 }
 
-/* Cobalt enamel (the table, the board sign): same glaze, inverted */
-@utility enamel-cobalt {
-  background-color: var(--color-cobalt);
-  border: 3px solid var(--color-cobalt-deep);
-  box-shadow:
-    inset 0 2px 0 rgb(255 255 255 / 0.18),
-    inset 0 0 0 5px var(--color-cobalt),
-    inset 0 0 0 7px rgb(251 252 253 / 0.85),
-    0 18px 36px -18px rgb(16 25 46 / 0.55);
+/* The black panel (board sign, member card back, footer) */
+@utility panel-dark {
+  background-color: var(--color-coal);
+  color: var(--color-paper);
+  border: 1px solid var(--color-coal-2);
+  box-shadow: 0 24px 48px -28px rgb(21 19 15 / 0.6);
 }
 
-/* Fine speckle fired into the glaze. A tiled SVG, not a gradient. */
-@utility speckle {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='170' height='170'%3E%3Cg fill='%2310192e' fill-opacity='.22'%3E%3Ccircle cx='14' cy='31' r='.9'/%3E%3Ccircle cx='71' cy='12' r='.6'/%3E%3Ccircle cx='121' cy='44' r='1.1'/%3E%3Ccircle cx='40' cy='97' r='.7'/%3E%3Ccircle cx='96' cy='83' r='.5'/%3E%3Ccircle cx='151' cy='120' r='.8'/%3E%3Ccircle cx='23' cy='150' r='.6'/%3E%3Ccircle cx='88' cy='141' r='1'/%3E%3Ccircle cx='137' cy='160' r='.5'/%3E%3Ccircle cx='160' cy='72' r='.6'/%3E%3C/g%3E%3C/svg%3E");
-}
-
-/* A chip in the rim: bare steel where the enamel knocked off. Repeated on the big enamel
-   surfaces at different heights (--chip-y), so the rim reads as a used, real object. */
-@layer components {
-  .chipped { position: relative; } /* a layer below utilities, so `absolute` still wins */
-}
-.chipped::after {
-  content: "";
-  position: absolute;
-  right: -3px;
-  top: var(--chip-y, 22%);
-  width: 12px;
-  height: 9px;
-  pointer-events: none;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 9'%3E%3Cpath d='M3 .6C6.4-.6 10.6.7 11.8 3.6 9.6 7.4 5 9.2 1.9 7.2-.4 5.2.3 2 3 .6z' fill='%2315171c'/%3E%3C/svg%3E") no-repeat center / contain;
-}
-
-/* Buttons: kettle red enamel for the one primary action, cobalt-rimmed white for the rest */
+/* Buttons: black pill for the one primary action, hairline outline for the rest */
 @utility btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
   border-radius: 9999px;
-  border: 2px solid transparent;
+  border: 1.5px solid transparent;
   transition:
     transform 160ms var(--ease-out),
     background-color 200ms var(--ease-out),
-    box-shadow 200ms var(--ease-out);
+    border-color 200ms var(--ease-out);
   &:active { transform: scale(0.97); }
   &:disabled { opacity: 0.5; pointer-events: none; }
 }
 @utility btn-primary {
-  background-color: var(--color-kettle);
-  border-color: var(--color-kettle-deep);
-  color: var(--color-enamel);
-  box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.28), 0 8px 18px -10px rgb(164 42 20 / 0.7);
+  background-color: var(--color-ink);
+  color: var(--color-paper);
   @media (hover: hover) and (pointer: fine) {
-    &:hover { background-color: var(--color-kettle-deep); }
+    &:hover { background-color: var(--color-coal-2); }
   }
 }
 @utility btn-plain {
-  background-color: var(--color-enamel);
-  border-color: var(--color-cobalt);
-  color: var(--color-cobalt-deep);
-  box-shadow: inset 0 2px 0 #fff;
+  background-color: transparent;
+  border-color: var(--color-ink);
+  color: var(--color-ink);
   @media (hover: hover) and (pointer: fine) {
-    &:hover { background-color: var(--color-enamel-2); }
+    &:hover { background-color: rgb(21 19 15 / 0.06); }
   }
 }
 
-/* ─── Browser surfaces carry the glaze too ─── */
+/* ─── Browser surfaces ─── */
 html {
-  background-color: var(--color-enamel);
+  background-color: var(--color-paper);
   color: var(--color-ink);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
-  scrollbar-color: var(--color-cobalt) var(--color-enamel-2);
+  scrollbar-color: var(--color-ink-2) var(--color-paper-2);
   scroll-padding-top: 6rem;
 }
-body { @apply speckle; }
-::selection { background: var(--color-cobalt); color: var(--color-enamel); }
-input, textarea { caret-color: var(--color-kettle); }
-:focus-visible { outline: 3px solid var(--color-cobalt); outline-offset: 3px; border-radius: 6px; }
-a { text-underline-offset: 0.2em; text-decoration-thickness: 1.5px; }
+body { background-color: var(--color-paper); }
+::selection { background: var(--color-ochre); color: var(--color-ink); }
+input, textarea { caret-color: var(--color-ochre-deep); }
+:focus-visible { outline: 2px solid var(--color-ink); outline-offset: 3px; border-radius: 6px; }
+a { text-underline-offset: 0.22em; text-decoration-thickness: 1px; }
 .tnum { font-variant-numeric: tabular-nums; }
 
 .skip-link {
   position: fixed; left: 1rem; top: 1rem; z-index: 100;
   padding: 0.5rem 0.75rem; border-radius: 9999px;
-  background: var(--color-cobalt); color: var(--color-enamel); font-weight: 600;
+  background: var(--color-ink); color: var(--color-paper); font-weight: 500;
   transform: translateY(-200%);
   transition: transform 200ms var(--ease-out);
 }
 .skip-link:focus { transform: none; }
 
-/* The open seat breathes so the eye finds it */
+/* An open seat breathes so the eye finds it */
 @keyframes seat-breathe {
-  0%, 100% { opacity: 0.35; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.08); }
+  0%, 100% { opacity: 0.45; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.12); }
 }
-.seat-open-ring { transform-box: fill-box; transform-origin: center; animation: seat-breathe 2.4s var(--ease-out) infinite; }
+.seat-open-ring { transform-box: fill-box; transform-origin: center; animation: seat-breathe 2.6s var(--ease-out) infinite; }
 
-/* Plates and chairs are set down on the table one after another */
-@keyframes set-down { from { opacity: 0; transform: scale(1.12); } }
+/* Seats set down one after another */
+@keyframes set-down { from { opacity: 0; transform: scale(1.08); } }
 .set-down { transform-box: fill-box; transform-origin: center; animation: set-down 500ms var(--ease-out) both; }
 
 /* Page changes: the old page settles away, the new one rises a little */

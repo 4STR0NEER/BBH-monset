@@ -1,77 +1,76 @@
 ---
 name: Business Breakfast Hub
-description: Peltre enamelware for Cebu's business breakfast table
+description: Yellow ochre and black, casual and grown up, for Cebu's business breakfast table
 colors:
-  enamel: "#fbfcfd"
-  enamel-shadow: "#eef2f7"
-  enamel-line: "#dde4ee"
-  cobalt: "#1f3fa3"
-  cobalt-deep: "#142b78"
-  cobalt-soft: "#c9d4f0"
-  ink: "#10192e"
-  ink-soft: "#3a4763"
-  chip-steel: "#15171c"
-  kettle: "#c6361d"
-  kettle-deep: "#a42a14"
-  celadon: "#5f8f7f"
-  kape: "#4a2c1d"
-  pandesal: "#c98b4f"
+  ochre: "#d39b2a"
+  ochre-deep: "#a9761a"
+  ochre-ink: "#6b480b"
+  ochre-soft: "#f1dfb4"
+  ink: "#15130f"
+  ink-soft: "#514c43"
+  coal: "#1d1b17"
+  coal-2: "#2b2823"
+  paper: "#f5f4ef"
+  paper-2: "#eae8e0"
+  raised: "#fbfaf7"
+  line: "#d9d6cb"
+  rust: "#a8321f"
 typography:
   heading-1:
     fontFamily: "Geist Variable, ui-sans-serif, system-ui, sans-serif"
     fontSize: "3.75rem"
-    fontWeight: 600
+    fontWeight: 500
     lineHeight: 1
-    letterSpacing: "-0.035em"
+    letterSpacing: "-0.04em"
   heading-2:
     fontFamily: "Geist Variable, ui-sans-serif, system-ui, sans-serif"
     fontSize: "3rem"
-    fontWeight: 600
+    fontWeight: 500
     lineHeight: 1
-    letterSpacing: "-0.03em"
+    letterSpacing: "-0.035em"
   heading-3:
     fontFamily: "Geist Variable, ui-sans-serif, system-ui, sans-serif"
     fontSize: "2.25rem"
-    fontWeight: 600
+    fontWeight: 500
     lineHeight: 1.11
-    letterSpacing: "-0.025em"
+    letterSpacing: "-0.03em"
   heading-4:
     fontFamily: "Geist Variable, ui-sans-serif, system-ui, sans-serif"
     fontSize: "1.875rem"
-    fontWeight: 600
+    fontWeight: 500
     lineHeight: 1.2
-    letterSpacing: "-0.02em"
+    letterSpacing: "-0.025em"
   heading-5:
     fontFamily: "Geist Variable, ui-sans-serif, system-ui, sans-serif"
     fontSize: "1.5rem"
-    fontWeight: 600
+    fontWeight: 500
     lineHeight: 1.33
-    letterSpacing: "-0.015em"
+    letterSpacing: "-0.02em"
   heading-6:
     fontFamily: "Geist Variable, ui-sans-serif, system-ui, sans-serif"
     fontSize: "1.25rem"
     fontWeight: 600
     lineHeight: 1.4
-  title-4:
-    fontFamily: "Geist Variable, ui-sans-serif, system-ui, sans-serif"
-    fontSize: "0.875rem"
-    fontWeight: 500
-    lineHeight: 1.43
-  body-6:
-    fontFamily: "Geist Variable, ui-sans-serif, system-ui, sans-serif"
-    fontSize: "0.875rem"
-    fontWeight: 400
-    lineHeight: 1.43
   title-2:
     fontFamily: "Geist Variable, ui-sans-serif, system-ui, sans-serif"
     fontSize: "1.125rem"
     fontWeight: 500
     lineHeight: 1.56
+  title-4:
+    fontFamily: "Geist Variable, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "0.875rem"
+    fontWeight: 500
+    lineHeight: 1.43
   body-3:
     fontFamily: "Geist Variable, ui-sans-serif, system-ui, sans-serif"
     fontSize: "1rem"
     fontWeight: 400
     lineHeight: 1.5
+  body-6:
+    fontFamily: "Geist Variable, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "0.875rem"
+    fontWeight: 400
+    lineHeight: 1.43
   caption-5:
     fontFamily: "Geist Variable, ui-sans-serif, system-ui, sans-serif"
     fontSize: "0.75rem"
@@ -82,12 +81,17 @@ typography:
     fontSize: "1.125rem"
     fontWeight: 500
     lineHeight: 1.56
+  mark:
+    fontFamily: "Barlow Condensed, Arial Narrow, sans-serif"
+    fontSize: "15px"
+    fontWeight: 600
+    lineHeight: 1
 rounded:
   focus: "6px"
+  mark: "10px"
   field: "12px"
-  plate: "16px"
-  card: "28px"
-  sign: "32px"
+  card: "16px"
+  band: "32px"
   pill: "9999px"
 spacing:
   xs: "4px"
@@ -98,38 +102,41 @@ spacing:
   section: "96px"
 components:
   button-primary:
-    backgroundColor: "{colors.kettle}"
-    textColor: "{colors.enamel}"
+    backgroundColor: "{colors.ink}"
+    textColor: "{colors.paper}"
     rounded: "{rounded.pill}"
     padding: "10px 20px"
   button-primary-hover:
-    backgroundColor: "{colors.kettle-deep}"
-  button-plain:
-    backgroundColor: "{colors.enamel}"
-    textColor: "{colors.cobalt-deep}"
+    backgroundColor: "{colors.coal-2}"
+  button-ochre:
+    backgroundColor: "{colors.ochre}"
+    textColor: "{colors.ink}"
     rounded: "{rounded.pill}"
     padding: "10px 20px"
-  button-plain-hover:
-    backgroundColor: "{colors.enamel-shadow}"
+  button-plain:
+    backgroundColor: "transparent"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.pill}"
+    padding: "10px 20px"
   input:
-    backgroundColor: "{colors.enamel}"
+    backgroundColor: "{colors.paper}"
     textColor: "{colors.ink}"
     rounded: "{rounded.field}"
     height: "48px"
     padding: "0 12px"
-  chip-filter-active:
-    backgroundColor: "{colors.cobalt}"
-    textColor: "{colors.enamel}"
+  pill-active:
+    backgroundColor: "{colors.ink}"
+    textColor: "{colors.paper}"
     rounded: "{rounded.pill}"
     padding: "6px 12px"
-  enamel-plate:
-    backgroundColor: "{colors.enamel}"
-    rounded: "{rounded.plate}"
+  surface:
+    backgroundColor: "{colors.raised}"
+    rounded: "{rounded.card}"
     padding: "16px"
-  cobalt-sign:
-    backgroundColor: "{colors.cobalt}"
-    textColor: "{colors.enamel}"
-    rounded: "{rounded.sign}"
+  panel-dark:
+    backgroundColor: "{colors.coal}"
+    textColor: "{colors.paper}"
+    rounded: "{rounded.band}"
     padding: "40px"
 ---
 
@@ -137,113 +144,110 @@ components:
 
 ## Overview
 
-**Creative North Star: "The Breakfast Table, Fired in Enamel"**
+**Creative North Star: "Ochre Morning, Black Coffee"**
 
-The site is built from peltre, the white enamel mugs and plates with a cobalt rim that sit on every Filipino breakfast table. Every big surface is a piece of that enamelware: cool white glaze, a cobalt rim drawn as a real border, a highlight along the top edge, soft weight underneath, a little speckle fired into the glaze, and the odd chip where bare steel shows. One tomato red, the colour of the enamel kettle, is kept for the single action that matters on each screen.
+BBH's own colours lead: a deep yellow ochre and black. Ochre carries the big moments (the hero and the closing invitation), black carries the type, the buttons and the dark panels, and a quiet off-white ground sits between them so the page can breathe. The feel is sophisticated and casual, like a good café before opening: unfussy, warm and grown up. It's never cartoony.
 
-The table is the interface. The landing hero is a round cobalt table seen from above, with one plate per seat. Signing up fills in a place card that turns over into an enamel member card. On the board, seat counts change by rolling like a counter drum.
+The table is still the idea, but it's real. The hero is a top-down photograph of a set breakfast table, with live seat markers placed on the place settings. On `/join` the seat picker is a fine line floor plan of the table. The place card turns over into a black member card.
 
 **Key Characteristics:**
-- Cool white enamel ground (#fbfcfd), never cream.
-- Cobalt rims (3px borders) on every major surface, with a cobalt enamel inversion for the important sign.
-- Kettle red only on the primary action and on "you" markers (your seat, your initials).
-- One typeface, Geist, with Geist Mono only for times, counts and member numbers.
-- Speckle and chips are a repeating unit, not one-off decoration.
+- Big flat fields of yellow ochre with black type on them.
+- Black pill buttons for the primary action. On black panels the action becomes an ochre pill.
+- Hairline rules and soft, long shadows. No thick borders, no outlines drawn as decoration.
+- Geist at weight 500 for headings, Geist Mono for times and counts, and a condensed sans only inside the BBH square mark.
+- Real photography, plus fine line drawing where a photo can't work.
 
 ## Colors
 
 ### Primary
-- **Cobalt rim** (#1f3fa3): every rim, focus ring and active state, and the table itself. **Cobalt deep** (#142b78) is the outer rim of cobalt surfaces and the colour of strong links. **Cobalt soft** (#c9d4f0) is for hairline dividers and secondary text on cobalt.
+- **Ochre** (#d39b2a): the brand field. Used for the hero, the closing band, open seats, "you" markers and the logo square's line. **Ochre deep** (#a9761a) is the hover on ochre buttons and ochre strokes on paper. **Ochre ink** (#6b480b) is ochre used as text on paper. **Ochre soft** (#f1dfb4) is the Offer tag background.
 
 ### Secondary
-- **Kettle red** (#c6361d, pressed #a42a14): the primary button, open seats, your seat, and inline errors.
-
-### Tertiary
-- **Celadon** (#5f8f7f): the "Offer" tag on the board only.
-- **Pan de sal** (#c98b4f) and **kape** (#4a2c1d): food on the table illustration only. Never used as UI colour.
+- **Ink** (#15130f): all type, the primary button, active pills. **Coal** (#1d1b17) and **coal 2** (#2b2823) are the black panels and their hover.
 
 ### Neutral
-- **Enamel** (#fbfcfd) is the ground and the plates. **Enamel shadow** (#eef2f7) is glaze in shadow: hover fills, the place card fold, date blocks. **Enamel line** (#dde4ee) is used for inner plate rings.
-- **Ink** (#10192e) is body text, a near black tinted cobalt. **Ink soft** (#3a4763) is secondary text and placeholders (at 75%).
-- **Chip steel** (#15171c) appears only where enamel has chipped.
+- **Paper** (#f5f4ef) is the page ground. **Paper 2** (#eae8e0) is for hover fills and date blocks. **Raised** (#fbfaf7) is for cards on paper. **Line** (#d9d6cb) is for hairlines. **Ink soft** (#514c43) is secondary text.
+- **Rust** (#a8321f) is for errors only.
 
 ### Named Rules
-**The One Kettle Rule.** A screen has one kettle red action. Everything else is cobalt or plain enamel.
+**The Brand Field Rule.** Ochre appears as a field (a whole band or section) or as a small signal (open seat, you, the mark). It is never a mid-sized tint scattered around.
 
-**The Cool Glaze Rule.** The ground is cool white enamel. Cream, parchment or warm paper grounds break the world.
+**The One Black Button Rule.** Each screen has one primary action, a black pill. On a black panel it inverts to an ochre pill.
 
 ## Typography
 
-**Body and display font:** Geist Variable (one family, weights 400 to 600).
-**Numerals font:** Geist Mono Variable, for times, counts, dates in data and member numbers.
+**Interface font:** Geist Variable. **Numerals:** Geist Mono Variable (times, counts, dates in data, member numbers). **Mark:** Barlow Condensed 600, only inside the BBH square.
 
 ### Hierarchy
-- **Heading 1 to 6** (600, 60/48/36/30/24/20px, tracking from -0.035em to 0): page and section headings, balanced wrapping.
-- **Title 2 to 4** (500, 18/16/14px): card titles, list item titles, nav items.
-- **Body 3 and 6** (400, 16 and 14px, pretty wrapping): running text, capped near 65ch.
-- **Button lg, md and sm** (600, 18/16/14px): button labels only.
-- **Caption 3 and 5** (600 or 400, 12px): metadata, tags and fine print.
+- **Heading 1 to 5** (500, 60/48/36/30/24px, tracking from -0.04em to -0.02em): page and section headings, balanced wrapping. The second line of a hero heading drops to 60% ink.
+- **Heading 6** (600, 20px): small section heads in long text.
+- **Title 2 to 4** (500, 18/16/14px): list item titles, nav, labels.
+- **Body 3 and 6** (400, 16 and 14px): running text, kept near 65ch.
+- **Button lg, md and sm** (500): button labels.
+- **Caption 3 and 5** (600 or 400, 12px): tags, metadata, fine print.
 
 ### Named Rules
-**The Named Style Rule.** Text uses a named style class (`heading-3`, `body-6`, `caption-3`). Don't set a loose size and weight.
+**The Named Style Rule.** Text uses a named style class. Don't set a loose size and weight.
 
-**The Plain Copy Rule.** No hyphens inside sentences and no italics. Use sentence case for headings and buttons.
+**The Plain Copy Rule.** No hyphens inside sentences, no italics, sentence case.
 
 ## Layout
 
-Content sits in a 72rem column with 16px gutters on phones. Sections are separated by 96px. Inside a section, groups are tight (8 to 16px) and the separation between them is generous (48px). There is more space above a heading than below it. Lists are ruled with 2px cobalt soft hairlines instead of being boxed into cards. Two-column sections pair a sticky heading or form with a ruled list on desktop, and stack on phones. The breakfast agenda sizes each block by its real duration.
+Content sits in a 72rem column with 16px gutters on phones. Sections are separated by 96px, with tight groups inside them. Lists are separated by hairlines, not boxed. The breakfast agenda is a timeline of 2px black rules whose widths match each block's real duration. The ochre hero runs full bleed. The closing band and the dark panels sit inside the column with 32px corners.
 
 ## Elevation & Depth
 
-Depth comes from the glaze. An enamel surface carries a white inner highlight along its top edge, a faint cobalt inner shade at the bottom, and one soft offset drop shadow (`0 14px 28px -16px`). Cobalt surfaces add a white inner rim line. There are no zero-offset glows and no hard offset block shadows.
+Depth is quiet: cards on paper get a 1px line plus a long soft shadow (`0 18px 40px -24px`). Dark panels get a deeper version. The hero photo carries the strongest shadow, so it reads as an object on the ochre field.
 
 ### Shadow Vocabulary
-- **Glaze** (`inset 0 2px 0 #fff, inset 0 -8px 16px -10px rgb(20 43 120 / .18), 0 14px 28px -16px rgb(16 25 46 / .4)`): every `enamel` surface.
-- **Kettle lift** (`0 8px 18px -10px rgb(164 42 20 / .7)`): the primary button.
+- **Raised** (`0 1px 2px rgb(21 19 15 / .04), 0 18px 40px -24px rgb(21 19 15 / .28)`): cards and tooltips.
+- **Panel** (`0 24px 48px -28px rgb(21 19 15 / .6)`): black panels.
+- **Photo** (`0 30px 60px -30px rgb(21 19 15 / .45)`): the hero photo.
 
 ## Shapes
 
-Shapes are enamelware shapes: round plates, pill-shaped buttons and nav, and rounded rectangles for trays and signs (12px fields, 16px plates, 28px cards, 32px signs). Rims are a full 3px border all the way around, never on one side only. Chips are small irregular steel marks that sit on the right-hand rim of large enamel surfaces, at varied heights.
+Pills for buttons, nav, tags and seat markers. 12px corners for fields and tooltips, 16px for cards and the photo, 28 to 32px for bands and panels. The logo is a 10px rounded square drawn in a 2px ochre line.
 
 ## Components
 
 ### Buttons
-- **Primary (kettle):** kettle red enamel pill with a darker rim and an inner highlight. It darkens on hover and scales to 0.97 when pressed.
-- **Plain:** an enamel pill with a cobalt rim and cobalt deep text, filling with glaze shadow on hover.
-- **Hold button:** a kettle-rimmed pill that fills left to right while held, drains back if released early, and turns solid when done. It's used for giving up a seat. It works with Enter and Space and announces the result.
+- **Primary:** a black pill with paper text. It lifts to coal 2 on hover and scales to 0.97 when pressed.
+- **Ochre:** an ochre pill with black text, used only on black panels.
+- **Plain:** a 1.5px ink outline pill.
+- **Hold button:** an outline pill in the surrounding text colour that fills while held and turns ochre when done. It's for giving up a seat, and it works with Enter and Space.
 
 ### Chips
-- **Filter and section pills:** a cobalt soft rim. When active (`aria-pressed` or `aria-current`) they fill solid cobalt with enamel text, and only the background animates.
-- **Sample tag:** a small cobalt-soft-rimmed pill marking dummy content.
+- **Filter and section pills:** a hairline outline. When active they fill solid ink with paper text, with no colour transition, because these change constantly as you scroll.
+- **Sample tag:** a hairline pill in the current text colour.
 
 ### Cards / Containers
-- **Enamel plate:** enamel glaze, cobalt rim, 16 to 28px radius.
-- **Cobalt sign:** cobalt enamel with a white inner rim line and speckle. Used for the board's next breakfast and the board teaser.
+- **Surface:** raised paper, a 1px line, a long soft shadow.
+- **Panel dark:** coal with paper text. Used for the board sign, the member card back, the board teaser and the footer.
 
 ### Inputs / Fields
-A 48px enamel field with a 2px cobalt soft rim. The rim strengthens to cobalt on hover and focus, and to kettle red when invalid. The error text sits below in kettle deep. Selects use a custom cobalt caret. The caret colour is kettle red.
+A 48px paper field with a 1px line. It turns ink on focus and rust when invalid, with the error text below. The caret is ochre deep, and selects use a custom caret.
 
 ### Navigation
-A floating enamel pill that sits off the top edge, with a translucent glaze and a blur behind it. On phones it opens a full-height glaze panel whose links rise in one after another.
+A floating paper pill nav carrying the BBH square mark and the full name. On phones it opens a full-height panel.
 
-### Signature: the table, the place card, the counter
-- **Table:** an SVG top-down round cobalt table with a plate and mug per seat. Open seats show a red dashed rim that breathes. Your seat shows red initials.
-- **Place card:** the front is a folded card that fills in as you type, with a maker's stamp at the foot. The back is the cobalt member card. It flips 180° on the y axis over 700ms with a strong ease-in-out.
-- **Counter:** each digit is a 0 to 9 strip that rolls to its new value.
+### Signature: photo table, floor plan, member card
+- **Photo table:** a real top-down table photo. Each place setting has a marker: a black initials disc for taken seats, an ochre initials disc for you, and a breathing ochre ring with an "Open" pill for open seats. The photo credit sits under the photo.
+- **Floor plan:** a fine line drawing of the table and chairs for picking a seat. Ochre is used only for open seats and for you.
+- **Member card:** the place card (raised paper, a dashed fold, an ochre rule, the maker's mark) turns 180° into a coal card with the BBH mark and an ochre seat tag.
 
 ## Do's and Don'ts
 
 ### Do:
-- **Do** draw every major surface as enamelware: glaze, a full cobalt rim, the top highlight, and a soft offset shadow.
-- **Do** keep kettle red for the single primary action and for "you" markers.
-- **Do** set times, counts and member numbers in Geist Mono with tabular numerals.
+- **Do** let ochre fill whole fields, with black type on them.
+- **Do** use real photography of tables, food and people, and credit stand-in photos.
+- **Do** use hairlines and space for structure.
 - **Do** label every piece of dummy content as Sample.
-- **Do** give every interactive element hover, pressed (scale 0.97), visible focus, disabled and error states.
+- **Do** give every interactive element hover, pressed (0.97), visible focus, disabled and error states.
 
 ### Don't:
-- **Don't** use cream, parchment or warm paper grounds.
+- **Don't** draw cartoon or pop-art illustrations, or use flat icon food.
 - **Don't** use gradients on backgrounds or text.
-- **Don't** put kickers or eyebrow labels above headings, including uppercase brand lines above names.
-- **Don't** put a border on only one side of a card, or use hard offset block shadows.
-- **Don't** add a second typeface or use italics.
+- **Don't** use thick borders, coloured side borders, or hard offset shadows.
+- **Don't** use the condensed face outside the BBH mark, or use italics.
+- **Don't** put kickers or eyebrow labels above headings.
 - **Don't** invent real BBH facts such as fees, venues, how often they meet or member counts.

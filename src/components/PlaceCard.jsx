@@ -2,7 +2,7 @@ import { useReducedMotion } from "motion/react";
 import { fmtDate, fmtTime } from "./ui.jsx";
 
 // Front: the folded place card you fill in, updating as you type.
-// Back: the enamel member card it is fired into. `flipped` turns it over.
+// Back: the surface member card it is fired into. `flipped` turns it over.
 export default function PlaceCard({ card, flipped = false, className = "" }) {
   const reduce = useReducedMotion();
   const seat = card.seat != null ? card.seat + 1 : null;
@@ -16,33 +16,29 @@ export default function PlaceCard({ card, flipped = false, className = "" }) {
       >
         {/* front: the place card */}
         <div
-          className={`${face} enamel speckle chipped flex flex-col overflow-hidden transition-opacity duration-300`}
+          className={`${face} surface flex flex-col overflow-hidden transition-opacity duration-300`}
           style={{ opacity: reduce && flipped ? 0 : 1 }}
           aria-hidden={flipped}
         >
-          <div className="h-[16%] border-b-2 border-dashed border-cobalt-soft bg-enamel-2" />
+          <div className="h-[16%] border-b border-dashed border-line bg-paper-2" />
           <div className="flex flex-1 flex-col justify-between p-5 sm:p-7">
             <div className="flex items-start justify-end gap-3">
-              <p className="tnum caption-3 shrink-0 rounded-full border-2 border-cobalt px-2 py-0.5 font-mono text-cobalt-deep">
+              <p className="tnum caption-3 shrink-0 rounded-full border border-ink/40 px-2 py-0.5 font-mono text-ink">
                 {seat ? `Seat ${seat}` : "Seat ·"}
               </p>
             </div>
             <div className="min-w-0">
               <p className={`heading-5 sm:heading-4 truncate ${card.name ? "text-ink" : "text-ink/30"}`}>{card.name || "Your name"}</p>
-              <p className={`title-3 truncate ${card.business ? "text-cobalt-deep" : "text-ink/30"}`}>{card.business || "Your business"}</p>
+              <p className={`title-3 truncate ${card.business ? "text-ink" : "text-ink/30"}`}>{card.business || "Your business"}</p>
               <p className="caption-5 mt-1 truncate text-ink-2">{[card.industry, card.area].filter(Boolean).join(" · ") || "What you do · Where you are"}</p>
               {/* the plate rim, repeated as two hairlines along the foot of the card */}
               <div className="mt-4 space-y-1" aria-hidden="true">
-                <div className="h-[3px] rounded-full bg-cobalt" />
-                <div className="h-px rounded-full bg-cobalt-soft" />
+                <div className="h-0.5 rounded-full bg-ochre" />
               </div>
-              {/* maker's stamp, the way enamelware carries its mark */}
-              <p className="caption-3 mt-2 flex items-center gap-1.5 text-cobalt">
-                <svg viewBox="0 0 40 36" className="h-3.5 w-auto" aria-hidden="true">
-                  <path d="M4 6h26v16a10 10 0 0 1-10 10h-6A10 10 0 0 1 4 22z" fill="none" stroke="currentColor" strokeWidth="3.5" />
-                  <path d="M30 11h3a5 5 0 0 1 0 10h-3" fill="none" stroke="currentColor" strokeWidth="3.5" />
-                </svg>
-                BBH · Cebu
+              {/* the maker's mark at the foot of the card */}
+              <p className="caption-3 mt-2 flex items-center gap-1.5 text-ochre-ink">
+                <span className="font-mark grid h-5 w-8 place-items-center rounded-[5px] border border-ochre text-xs leading-none text-ink" aria-hidden="true">BBH</span>
+                Business Breakfast Hub · Cebu
               </p>
             </div>
           </div>
@@ -50,20 +46,25 @@ export default function PlaceCard({ card, flipped = false, className = "" }) {
 
         {/* back: the member card */}
         <div
-          className={`${face} enamel-cobalt speckle flex flex-col justify-between p-5 text-enamel transition-opacity duration-300 sm:p-7`}
+          className={`${face} panel-dark flex flex-col justify-between p-5 text-paper transition-opacity duration-300 sm:p-7`}
           style={{ transform: reduce ? "none" : "rotateY(180deg)", opacity: reduce && !flipped ? 0 : 1 }}
           aria-hidden={!flipped}
         >
           <div className="flex items-start justify-between gap-3">
-            <p className="title-4">BBH member</p>
-            <p className="tnum caption-3 font-mono text-cobalt-soft">{card.memberNo}</p>
+            <p className="title-4 flex items-center gap-2">
+              <span className="font-mark grid h-6 w-8 place-items-center rounded-md border-[1.5px] border-ochre text-xs leading-none" aria-hidden="true">
+                BBH
+              </span>
+              Member
+            </p>
+            <p className="tnum caption-3 font-mono text-paper/70">{card.memberNo}</p>
           </div>
           <div className="min-w-0">
             <p className="heading-5 sm:heading-4 truncate">{card.name}</p>
-            <p className="title-3 truncate text-cobalt-soft">{card.business}</p>
+            <p className="title-3 truncate text-paper/70">{card.business}</p>
           </div>
-          <div className="flex flex-wrap items-end justify-between gap-2 border-t-2 border-enamel/20 pt-3">
-            <p className="caption-5 text-cobalt-soft">
+          <div className="flex flex-wrap items-end justify-between gap-2 border-t border-paper/20 pt-3">
+            <p className="caption-5 text-paper/70">
               {card.breakfast ? (
                 <>
                   Next breakfast · {fmtDate(card.breakfast)} · <span className="tnum font-mono">{fmtTime(card.breakfast)}</span>
@@ -72,12 +73,8 @@ export default function PlaceCard({ card, flipped = false, className = "" }) {
                 "Business Breakfast Hub · Cebu"
               )}
             </p>
-            {seat && <p className="tnum caption-3 rounded-full bg-kettle px-2 py-0.5 font-mono">Seat {seat}</p>}
+            {seat && <p className="tnum caption-3 rounded-full bg-ochre px-2 py-0.5 font-mono text-ink">Seat {seat}</p>}
           </div>
-          {/* a chip in the rim */}
-          <svg viewBox="0 0 20 14" className="absolute top-6 -right-0.5 w-4" aria-hidden="true">
-            <path d="M4 1c6-2 13 1 15 6-4 5-11 7-16 4-3-3-2-7 1-10z" fill="#15171c" />
-          </svg>
         </div>
       </div>
     </div>

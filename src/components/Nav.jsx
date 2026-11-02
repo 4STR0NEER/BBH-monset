@@ -12,7 +12,7 @@ const LINKS = [
 ];
 const EASE = [0.22, 1, 0.36, 1];
 
-// Floating enamel nameplate nav. On phones the menu opens as a full height glaze panel.
+// Floating surface nameplate nav. On phones the menu opens as a full height glaze panel.
 export default function Nav() {
   const [open, setOpen] = useState(false);
   const reduce = useReducedMotion();
@@ -32,14 +32,14 @@ export default function Nav() {
 
   return (
     <header className="fixed inset-x-0 top-3 z-50 flex justify-center px-4">
-      <nav aria-label="Main" style={{ "--chip-y": "calc(50% - 4px)" }} className="enamel chipped flex w-full max-w-4xl items-center gap-2 rounded-full bg-enamel/90 py-1.5 pr-1.5 pl-4 backdrop-blur-md">
+      <nav aria-label="Main" className="surface flex w-full max-w-4xl items-center gap-2 rounded-full bg-paper/90 py-1.5 pr-1.5 pl-4 backdrop-blur-md">
         <Link to="/" className="mr-auto rounded-full" onClick={() => setOpen(false)}>
           <Logo />
         </Link>
         <ul className="hidden items-center gap-1 md:flex">
           {links.map((l) => (
             <li key={l.to}>
-              <Link to={l.to} className="title-4 rounded-full px-3 py-2 text-ink-2 transition-colors duration-300 hover:bg-enamel-2 hover:text-ink">
+              <Link to={l.to} className="title-4 rounded-full px-3 py-2 text-ink-2 transition-colors duration-300 hover:bg-paper-2 hover:text-ink">
                 {l.label}
               </Link>
             </li>
@@ -47,11 +47,11 @@ export default function Nav() {
         </ul>
         {user ? (
           <>
-            <Link to="/board" className="title-4 hidden rounded-full px-3 py-2 text-cobalt-deep hover:underline sm:inline-flex">
+            <Link to="/board" className="title-4 hidden rounded-full px-3 py-2 text-ink hover:underline sm:inline-flex">
               The board
             </Link>
             <Link to="/join" className="btn btn-plain button-sm gap-2 py-1 pr-3 pl-1" aria-label={`Your member card, ${user.name}`}>
-              <span className="grid size-7 place-items-center rounded-full bg-kettle text-xs text-enamel" aria-hidden="true">
+              <span className="grid size-7 place-items-center rounded-full bg-ochre text-xs text-ink" aria-hidden="true">
                 {user.name.split(" ").map((w) => w[0]).join("").slice(0, 2)}
               </span>
               Your card
@@ -59,7 +59,7 @@ export default function Nav() {
           </>
         ) : (
           <>
-            <Link to="/join?mode=signin" className="title-4 hidden rounded-full px-3 py-2 text-cobalt-deep hover:underline sm:inline-flex">
+            <Link to="/join?mode=signin" className="title-4 hidden rounded-full px-3 py-2 text-ink hover:underline sm:inline-flex">
               Take your seat
             </Link>
             <Link to="/join" className="btn btn-primary button-sm px-4 py-2">
@@ -69,7 +69,7 @@ export default function Nav() {
         )}
         <button
           type="button"
-          className="relative grid size-10 place-items-center rounded-full text-cobalt-deep md:hidden"
+          className="relative grid size-10 place-items-center rounded-full text-ink md:hidden"
           aria-expanded={open}
           aria-controls="mobile-menu"
           aria-label={open ? "Close menu" : "Open menu"}
@@ -89,7 +89,7 @@ export default function Nav() {
         {open && (
           <motion.div
             id="mobile-menu"
-            className="speckle fixed inset-0 -z-10 bg-enamel/95 px-6 pt-28 backdrop-blur-xl md:hidden"
+            className="fixed inset-0 -z-10 bg-paper/95 px-6 pt-28 backdrop-blur-xl md:hidden"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0, transition: { duration: 0.2 } }}
@@ -103,7 +103,7 @@ export default function Nav() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: Math.min(i * 0.06, 0.4), duration: 0.5, ease: EASE }}
                 >
-                  <Link to={l.to} onClick={() => setOpen(false)} className="heading-4 block border-b-2 border-enamel-3 py-3 text-ink">
+                  <Link to={l.to} onClick={() => setOpen(false)} className="heading-4 block border-b-2 border-line py-3 text-ink">
                     {l.label}
                   </Link>
                 </motion.li>
