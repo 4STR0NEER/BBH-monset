@@ -32,7 +32,7 @@ export default function Nav() {
 
   return (
     <header className="fixed inset-x-0 top-3 z-50 flex justify-center px-4">
-      <nav aria-label="Main" className="enamel flex w-full max-w-4xl items-center gap-2 rounded-full bg-enamel/90 py-1.5 pr-1.5 pl-4 backdrop-blur-md">
+      <nav aria-label="Main" style={{ "--chip-y": "calc(50% - 4px)" }} className="enamel chipped flex w-full max-w-4xl items-center gap-2 rounded-full bg-enamel/90 py-1.5 pr-1.5 pl-4 backdrop-blur-md">
         <Link to="/" className="mr-auto rounded-full" onClick={() => setOpen(false)}>
           <Logo />
         </Link>

@@ -4,9 +4,16 @@ import { Logo } from "./components/ui.jsx";
 import Home from "./pages/Home.jsx";
 import Join from "./pages/Join.jsx";
 import Board from "./pages/Board.jsx";
+import Legal from "./pages/Legal.jsx";
 import { Link, usePath } from "./lib/router.jsx";
 
-const PAGES = { "/": Home, "/join": Join, "/board": Board };
+const PAGES = {
+  "/": Home,
+  "/join": Join,
+  "/board": Board,
+  "/privacy": () => <Legal kind="privacy" />,
+  "/terms": () => <Legal kind="terms" />,
+};
 
 export default function App() {
   const path = usePath();
@@ -40,7 +47,7 @@ function NotFound() {
 function Footer() {
   return (
     <footer className="px-4 pb-8">
-      <div className="enamel mx-auto flex max-w-6xl flex-col gap-6 rounded-[2rem] p-6 md:flex-row md:items-center md:justify-between md:p-8">
+      <div className="enamel chipped mx-auto flex max-w-6xl flex-col gap-6 rounded-[2rem] p-6 md:flex-row md:items-center md:justify-between md:p-8" style={{ "--chip-y": "70%" }}>
         <div>
           <Logo />
           <p className="body-6 mt-2 text-ink-2">Business Breakfast Hub · Cebu, Philippines</p>
@@ -50,6 +57,14 @@ function Footer() {
             <FacebookLogo size={18} weight="bold" aria-hidden="true" /> BBH on Facebook
           </a>
           <p className="caption-5 text-ink-2">Website by Monset, built pro bono for the BBH community.</p>
+          <p className="caption-5 flex gap-4 text-ink-2">
+            <Link to="/privacy" className="underline hover:text-ink">
+              Privacy
+            </Link>
+            <Link to="/terms" className="underline hover:text-ink">
+              Terms
+            </Link>
+          </p>
         </div>
       </div>
     </footer>

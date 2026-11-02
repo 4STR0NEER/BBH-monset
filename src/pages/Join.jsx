@@ -294,7 +294,7 @@ function Field({ id, label, hint, error, className = "", children }) {
         "aria-invalid": !!error || undefined,
         "aria-describedby": error || hint ? msg : undefined,
         className:
-          "body-3 mt-1.5 block h-12 w-full rounded-xl border-2 border-cobalt-soft bg-enamel px-3 text-ink shadow-[inset_0_2px_0_#fff] transition-colors duration-200 placeholder:text-ink/35 hover:border-cobalt/60 focus:border-cobalt focus-visible:outline-offset-2 aria-invalid:border-kettle appearance-none",
+          "body-3 mt-1.5 block h-12 w-full rounded-xl border-2 border-cobalt-soft bg-enamel px-3 text-ink shadow-[inset_0_2px_0_#fff] transition-colors duration-200 placeholder:text-ink-2/75 hover:border-cobalt/60 focus:border-cobalt focus-visible:outline-offset-2 aria-invalid:border-kettle appearance-none",
       })}
       {children.type === "select" && <CaretDown size={16} weight="bold" aria-hidden="true" className="pointer-events-none absolute top-1/2 right-3 mt-[3px] -translate-y-1/2 text-cobalt" />}
       </div>

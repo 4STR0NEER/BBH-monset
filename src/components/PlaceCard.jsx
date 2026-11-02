@@ -16,14 +16,13 @@ export default function PlaceCard({ card, flipped = false, className = "" }) {
       >
         {/* front: the place card */}
         <div
-          className={`${face} enamel speckle flex flex-col overflow-hidden transition-opacity duration-300`}
+          className={`${face} enamel speckle chipped flex flex-col overflow-hidden transition-opacity duration-300`}
           style={{ opacity: reduce && flipped ? 0 : 1 }}
           aria-hidden={flipped}
         >
           <div className="h-[16%] border-b-2 border-dashed border-cobalt-soft bg-enamel-2" />
           <div className="flex flex-1 flex-col justify-between p-5 sm:p-7">
-            <div className="flex items-start justify-between gap-3">
-              <p className="caption-3 tracking-wide text-cobalt uppercase">Business Breakfast Hub</p>
+            <div className="flex items-start justify-end gap-3">
               <p className="tnum caption-3 shrink-0 rounded-full border-2 border-cobalt px-2 py-0.5 font-mono text-cobalt-deep">
                 {seat ? `Seat ${seat}` : "Seat ·"}
               </p>
@@ -37,6 +36,14 @@ export default function PlaceCard({ card, flipped = false, className = "" }) {
                 <div className="h-[3px] rounded-full bg-cobalt" />
                 <div className="h-px rounded-full bg-cobalt-soft" />
               </div>
+              {/* maker's stamp, the way enamelware carries its mark */}
+              <p className="caption-3 mt-2 flex items-center gap-1.5 text-cobalt">
+                <svg viewBox="0 0 40 36" className="h-3.5 w-auto" aria-hidden="true">
+                  <path d="M4 6h26v16a10 10 0 0 1-10 10h-6A10 10 0 0 1 4 22z" fill="none" stroke="currentColor" strokeWidth="3.5" />
+                  <path d="M30 11h3a5 5 0 0 1 0 10h-3" fill="none" stroke="currentColor" strokeWidth="3.5" />
+                </svg>
+                BBH · Cebu
+              </p>
             </div>
           </div>
         </div>

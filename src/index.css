@@ -67,7 +67,23 @@
 
 /* Fine speckle fired into the glaze. A tiled SVG, not a gradient. */
 @utility speckle {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='170' height='170'%3E%3Cg fill='%2310192e' fill-opacity='.11'%3E%3Ccircle cx='14' cy='31' r='.9'/%3E%3Ccircle cx='71' cy='12' r='.6'/%3E%3Ccircle cx='121' cy='44' r='1.1'/%3E%3Ccircle cx='40' cy='97' r='.7'/%3E%3Ccircle cx='96' cy='83' r='.5'/%3E%3Ccircle cx='151' cy='120' r='.8'/%3E%3Ccircle cx='23' cy='150' r='.6'/%3E%3Ccircle cx='88' cy='141' r='1'/%3E%3Ccircle cx='137' cy='160' r='.5'/%3E%3Ccircle cx='160' cy='72' r='.6'/%3E%3C/g%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='170' height='170'%3E%3Cg fill='%2310192e' fill-opacity='.22'%3E%3Ccircle cx='14' cy='31' r='.9'/%3E%3Ccircle cx='71' cy='12' r='.6'/%3E%3Ccircle cx='121' cy='44' r='1.1'/%3E%3Ccircle cx='40' cy='97' r='.7'/%3E%3Ccircle cx='96' cy='83' r='.5'/%3E%3Ccircle cx='151' cy='120' r='.8'/%3E%3Ccircle cx='23' cy='150' r='.6'/%3E%3Ccircle cx='88' cy='141' r='1'/%3E%3Ccircle cx='137' cy='160' r='.5'/%3E%3Ccircle cx='160' cy='72' r='.6'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* A chip in the rim: bare steel where the enamel knocked off. Repeated on the big enamel
+   surfaces at different heights (--chip-y), so the rim reads as a used, real object. */
+@layer components {
+  .chipped { position: relative; } /* a layer below utilities, so `absolute` still wins */
+}
+.chipped::after {
+  content: "";
+  position: absolute;
+  right: -3px;
+  top: var(--chip-y, 22%);
+  width: 12px;
+  height: 9px;
+  pointer-events: none;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 9'%3E%3Cpath d='M3 .6C6.4-.6 10.6.7 11.8 3.6 9.6 7.4 5 9.2 1.9 7.2-.4 5.2.3 2 3 .6z' fill='%2315171c'/%3E%3C/svg%3E") no-repeat center / contain;
 }
 
 /* Buttons: kettle red enamel for the one primary action, cobalt-rimmed white for the rest */

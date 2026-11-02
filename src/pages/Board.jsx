@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Armchair, ArrowRight, CalendarBlank, HandHeart, Question, Quotes } from "@phosphor-icons/react";
 import AnimatedNumber from "../components/AnimatedNumber.jsx";
 import HoldButton from "../components/HoldButton.jsx";
@@ -22,8 +22,24 @@ const greeting = () => {
 const initials = (n) => n.split(" ").map((w) => w[0]).join("").slice(0, 2);
 const shortDate = (iso) => new Date(iso).toLocaleDateString("en-PH", { month: "short", day: "numeric", timeZone: "Asia/Manila" });
 
+// Which section is under the sticky nav, so its pill can show "you are here".
+function useActiveSection(ids, enabled) {
+  const [active, setActive] = useState(ids[0]);
+  useEffect(() => {
+    if (!enabled) return;
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach((e) => e.isIntersecting && setActive(e.target.id)),
+      { rootMargin: "-30% 0px -60% 0px" },
+    );
+    ids.forEach((id) => document.getElementById(id) && io.observe(document.getElementById(id)));
+    return () => io.disconnect();
+  }, [enabled]); // eslint-disable-line react-hooks/exhaustive-deps
+  return active;
+}
+
 export default function Board() {
   const user = useUser();
+  const active = useActiveSection(SECTIONS.map(([id]) => id), !!user);
   if (!user) return <Gate />;
   return (
     <div className="px-4 pt-28 pb-24 md:pt-36">
@@ -42,7 +58,11 @@ export default function Board() {
           <ul className="enamel flex w-max gap-1 rounded-full bg-enamel/90 p-1 backdrop-blur-md">
             {SECTIONS.map(([id, label]) => (
               <li key={id}>
-                <Link to={`/board#${id}`} className="title-4 block rounded-full px-3 py-1.5 whitespace-nowrap text-ink-2 transition-colors duration-300 hover:bg-enamel-2 hover:text-ink">
+                <Link
+                  to={`/board#${id}`}
+                  aria-current={active === id ? "location" : undefined}
+                  className="title-4 block rounded-full px-3 py-1.5 whitespace-nowrap text-ink-2 transition-[background-color] duration-300 hover:bg-enamel-2 hover:text-ink aria-[current=location]:bg-cobalt aria-[current=location]:hover:bg-cobalt aria-[current=location]:text-enamel"
+                >
                   {label}
                 </Link>
               </li>
@@ -85,7 +105,7 @@ function NextBreakfast({ user }) {
 
   return (
     <section id="next" aria-labelledby="next-h" className="mt-6 scroll-mt-40">
-      <div className="enamel-cobalt speckle grid gap-8 rounded-[2rem] p-6 text-enamel md:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] md:p-10">
+      <div className="enamel-cobalt speckle chipped grid gap-8 rounded-[2rem] p-6 text-enamel md:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] md:p-10">
         <div>
           <h2 id="next-h" className="title-4 text-cobalt-soft">
             Next breakfast
@@ -243,7 +263,7 @@ function Features() {
           Member features
         </h2>
         <div className="mt-6 grid gap-12 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
-          <article className="enamel rounded-[2rem] p-6 md:p-10">
+          <article className="enamel chipped rounded-[2rem] p-6 md:p-10" style={{ "--chip-y": "64%" }}>
             <div className="flex items-center gap-4">
               <span className="title-2 grid size-16 shrink-0 place-items-center rounded-full border-3 border-cobalt bg-enamel-2 text-cobalt-deep">{initials(SPOTLIGHT.name)}</span>
               <div>
@@ -322,7 +342,7 @@ function AsksOffers() {
         <p className="body-3 mt-2 max-w-[40rem] text-ink-2">Need a supplier, a hire or a referral? Say it here. Have something to share? Offer it.</p>
 
         <div className="mt-6 grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)]">
-          <form onSubmit={submit} noValidate className="enamel h-fit rounded-[2rem] p-6 lg:sticky lg:top-40">
+          <form onSubmit={submit} noValidate className="enamel chipped h-fit rounded-[2rem] p-6 lg:sticky lg:top-40">
             <fieldset>
               <legend className="title-4 text-ink">I want to post an</legend>
               <div className="mt-2 grid grid-cols-2 gap-1 rounded-full bg-enamel-2 p-1">
@@ -349,7 +369,7 @@ function AsksOffers() {
               aria-invalid={!!error || undefined}
               aria-describedby="post-msg"
               placeholder={kind === "ask" ? "Looking for a supplier of food grade packaging in Mandaue." : "Free use of our meeting room in Banilad on Saturdays."}
-              className="body-3 mt-1.5 block w-full resize-none rounded-xl border-2 border-cobalt-soft bg-enamel px-3 py-2 text-ink placeholder:text-ink/35 hover:border-cobalt/60 focus:border-cobalt aria-invalid:border-kettle"
+              className="body-3 mt-1.5 block w-full resize-none rounded-xl border-2 border-cobalt-soft bg-enamel px-3 py-2 text-ink placeholder:text-ink-2/75 hover:border-cobalt/60 focus:border-cobalt aria-invalid:border-kettle"
             />
             <p id="post-msg" className={`caption-5 mt-1.5 ${error ? "text-kettle-deep" : "text-ink-2"}`} role={error ? "alert" : undefined}>
               {error || done || `${text.length} of 280 characters`}

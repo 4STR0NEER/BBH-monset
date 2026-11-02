@@ -64,7 +64,7 @@ function Hero() {
           </div>
 
           {/* proof: the next breakfast, as a small enamel plate */}
-          <div className="enamel mt-10 inline-flex max-w-full flex-wrap items-center gap-x-4 gap-y-2 rounded-2xl px-4 py-3">
+          <div className="enamel chipped mt-10 inline-flex max-w-full flex-wrap items-center gap-x-4 gap-y-2 rounded-2xl px-4 py-3">
             <CalendarCheck size={28} weight="duotone" className="shrink-0 text-cobalt" aria-hidden="true" />
             <div className="min-w-0">
               <p className="title-4 text-ink">
@@ -160,7 +160,7 @@ function SeatGets() {
 function BoardPreview() {
   return (
     <section id="board" className="px-4 py-24">
-      <Reveal className="enamel-cobalt speckle mx-auto max-w-5xl rounded-[2rem] p-6 text-enamel md:p-12">
+      <Reveal className="enamel-cobalt speckle chipped mx-auto max-w-5xl rounded-[2rem] p-6 text-enamel md:p-12">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div className="max-w-[680px]">
             <h2 className="heading-3 md:heading-2">The board</h2>
@@ -203,8 +203,10 @@ function Steps() {
         <Reveal as="ol" delay={0.1} className="mt-12 grid gap-8 md:grid-cols-3">
           {STEPS.map((s, i) => (
             <li key={s.title} className="border-t-3 border-cobalt pt-4">
-              <span className="tnum font-mono text-sm font-medium text-kettle">Step {i + 1}</span>
-              <h3 className="heading-5 mt-2 text-ink">{s.title}</h3>
+              <h3 className="heading-5 text-ink">
+                <span className="tnum mr-2 font-mono text-kettle">{i + 1}</span>
+                {s.title}
+              </h3>
               <p className="body-3 mt-2 text-ink-2">{s.text}</p>
             </li>
           ))}
