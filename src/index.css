@@ -1,141 +1,161 @@
 @import "tailwindcss";
 @import "@fontsource-variable/geist";
 @import "@fontsource-variable/geist-mono";
-@import "@fontsource/barlow-condensed/600.css"; /* the BBH wordmark only */
+@import "@fontsource/barlow-condensed/600.css";
+@import "@fontsource/barlow-condensed/700.css";
+@import "@fontsource/cormorant-garamond/500.css";
+@import "@fontsource/cormorant-garamond/600.css";
 
-/* ─── BBH: yellow ochre and black, on a quiet off-white. Casual, unfussy, grown up. ─── */
+/* ─── BBH after dark: espresso black, warm gold, cream type. Like the room at 6 AM, lights on. ─── */
 @theme {
   --font-sans: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "Geist Mono Variable", ui-monospace, monospace;
-  --font-mark: "Barlow Condensed", "Arial Narrow", sans-serif;
+  --font-display: "Barlow Condensed", "Arial Narrow", sans-serif; /* BBH's own voice: big caps */
+  --font-serif: "Cormorant Garamond", Georgia, serif; /* names: hubs, members */
 
-  --color-ochre: #d39b2a; /* BBH yellow ochre: big fields, open seats, "you" */
-  --color-ochre-deep: #a9761a; /* ochre in shade: hover, strokes on paper */
-  --color-ochre-ink: #6b480b; /* ochre as text on paper (7:1) */
-  --color-ochre-soft: #f1dfb4;
-  --color-ink: #15130f; /* black type, black buttons */
-  --color-ink-2: #514c43; /* secondary text on paper and ochre */
-  --color-coal: #1d1b17; /* black panels */
-  --color-coal-2: #2b2823;
-  --color-paper: #f5f4ef; /* page ground */
-  --color-paper-2: #eae8e0; /* hover fills, date blocks */
-  --color-raised: #fbfaf7; /* cards on paper */
-  --color-line: #d9d6cb; /* hairlines */
-  --color-rust: #a8321f; /* errors only */
+  --color-night: #0d0c0a; /* page ground */
+  --color-coal: #15130f; /* cards */
+  --color-coal-2: #1e1b16; /* raised, hover */
+  --color-coal-3: #2a261f; /* pressed, tracks */
+  --color-cream: #f4efe4; /* primary type (17:1 on night) */
+  --color-mute: #a39c8e; /* secondary type (7.4:1 on night) */
+  --color-faint: #6f695e; /* tertiary, decoration only */
+  --color-gold: #e6bf5e; /* BBH gold: the accent and the primary button */
+  --color-gold-deep: #c9a043; /* hover on gold */
+  --color-gold-soft: #e6bf5e1f; /* gold wash for chips */
+  --color-ink: #15120c; /* type on gold */
+  --color-rust: #ef8a72; /* errors (6.9:1 on night) */
+  --color-sage: #9cc49a; /* success, attending */
 
-  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
 }
 
-/* Text styles (landing-page-design B1). Use these names, not loose size + weight. */
-@utility heading-1 { font-size: 3.75rem; line-height: 1; font-weight: 500; letter-spacing: -0.04em; text-wrap: balance; }
-@utility heading-2 { font-size: 3rem; line-height: 1; font-weight: 500; letter-spacing: -0.035em; text-wrap: balance; }
-@utility heading-3 { font-size: 2.25rem; line-height: 2.5rem; font-weight: 500; letter-spacing: -0.03em; text-wrap: balance; }
-@utility heading-4 { font-size: 1.875rem; line-height: 2.25rem; font-weight: 500; letter-spacing: -0.025em; text-wrap: balance; }
+/* Text styles. Use these names, not loose size + weight. */
+@utility display-1 { font-family: var(--font-display); font-size: clamp(3.25rem, 9vw, 7.5rem); line-height: 0.88; font-weight: 700; text-transform: uppercase; letter-spacing: -0.01em; text-wrap: balance; }
+@utility display-2 { font-family: var(--font-display); font-size: clamp(2.5rem, 5.5vw, 4.5rem); line-height: 0.92; font-weight: 700; text-transform: uppercase; text-wrap: balance; }
+@utility display-3 { font-family: var(--font-display); font-size: 2.25rem; line-height: 1; font-weight: 700; text-transform: uppercase; }
+@utility serif-1 { font-family: var(--font-serif); font-size: clamp(2.25rem, 4vw, 3rem); line-height: 1.05; font-weight: 500; letter-spacing: -0.01em; }
+@utility serif-2 { font-family: var(--font-serif); font-size: 1.75rem; line-height: 1.15; font-weight: 600; letter-spacing: -0.005em; }
+@utility serif-3 { font-family: var(--font-serif); font-size: 1.375rem; line-height: 1.2; font-weight: 600; }
 @utility heading-5 { font-size: 1.5rem; line-height: 2rem; font-weight: 500; letter-spacing: -0.02em; text-wrap: balance; }
 @utility heading-6 { font-size: 1.25rem; line-height: 1.75rem; font-weight: 600; letter-spacing: -0.01em; text-wrap: balance; }
 @utility title-2 { font-size: 1.125rem; line-height: 1.75rem; font-weight: 500; }
 @utility title-3 { font-size: 1rem; line-height: 1.5rem; font-weight: 500; }
 @utility title-4 { font-size: 0.875rem; line-height: 1.25rem; font-weight: 500; }
+@utility body-2 { font-size: 1.125rem; line-height: 1.75rem; font-weight: 400; text-wrap: pretty; }
 @utility body-3 { font-size: 1rem; line-height: 1.5rem; font-weight: 400; text-wrap: pretty; }
-@utility body-2 { font-size: 1rem; line-height: 1.5rem; font-weight: 500; text-wrap: pretty; }
 @utility body-6 { font-size: 0.875rem; line-height: 1.25rem; font-weight: 400; text-wrap: pretty; }
-@utility button-lg { font-size: 1.125rem; line-height: 1.75rem; font-weight: 500; }
-@utility button-md { font-size: 1rem; line-height: 1.5rem; font-weight: 500; }
-@utility button-sm { font-size: 0.875rem; line-height: 1.25rem; font-weight: 500; }
-@utility caption-3 { font-size: 0.75rem; line-height: 1rem; font-weight: 600; }
+@utility label { font-size: 0.75rem; line-height: 1rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; }
 @utility caption-5 { font-size: 0.75rem; line-height: 1rem; font-weight: 400; }
 
-/* A card on paper: slightly raised paper, hairline edge, soft long shadow */
+/* A card on night: coal, a hairline of light on top, a long soft shadow */
 @utility surface {
-  background-color: var(--color-raised);
-  border: 1px solid var(--color-line);
-  box-shadow: 0 1px 2px rgb(21 19 15 / 0.04), 0 18px 40px -24px rgb(21 19 15 / 0.28);
-}
-
-/* The black panel (board sign, member card back, footer) */
-@utility panel-dark {
   background-color: var(--color-coal);
-  color: var(--color-paper);
-  border: 1px solid var(--color-coal-2);
-  box-shadow: 0 24px 48px -28px rgb(21 19 15 / 0.6);
+  border: 1px solid rgb(244 239 228 / 0.07);
+  box-shadow: inset 0 1px 0 rgb(244 239 228 / 0.04), 0 24px 48px -32px rgb(0 0 0 / 0.9);
 }
 
-/* Buttons: black pill for the one primary action, hairline outline for the rest */
+/* Buttons: one gold pill per screen, hairline outline pills for the rest */
 @utility btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
+  min-height: 2.75rem;
   border-radius: 9999px;
-  border: 1.5px solid transparent;
+  border: 1px solid transparent;
+  font-weight: 500;
+  cursor: pointer;
   transition:
     transform 160ms var(--ease-out),
-    background-color 200ms var(--ease-out),
-    border-color 200ms var(--ease-out);
+    background-color 200ms ease,
+    border-color 200ms ease,
+    color 200ms ease;
   &:active { transform: scale(0.97); }
   &:disabled { opacity: 0.5; pointer-events: none; }
 }
-@utility btn-primary {
-  background-color: var(--color-ink);
-  color: var(--color-paper);
+@utility btn-gold {
+  background-color: var(--color-gold);
+  color: var(--color-ink);
+  box-shadow: 0 10px 30px -12px rgb(230 191 94 / 0.55);
   @media (hover: hover) and (pointer: fine) {
-    &:hover { background-color: var(--color-coal-2); }
+    &:hover { background-color: var(--color-gold-deep); }
   }
 }
-@utility btn-plain {
-  background-color: transparent;
-  border-color: var(--color-ink);
-  color: var(--color-ink);
+@utility btn-line {
+  border-color: rgb(244 239 228 / 0.18);
+  color: var(--color-cream);
   @media (hover: hover) and (pointer: fine) {
-    &:hover { background-color: rgb(21 19 15 / 0.06); }
+    &:hover { border-color: rgb(244 239 228 / 0.4); background-color: rgb(244 239 228 / 0.04); }
   }
+}
+
+/* Form field on night */
+@utility field {
+  display: block;
+  width: 100%;
+  height: 3rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgb(244 239 228 / 0.12);
+  background-color: var(--color-night);
+  padding: 0 0.875rem;
+  color: var(--color-cream);
+  font-size: 1rem;
+  appearance: none;
+  transition: border-color 200ms ease;
+  &::placeholder { color: var(--color-faint); }
+  @media (hover: hover) and (pointer: fine) { &:hover { border-color: rgb(244 239 228 / 0.25); } }
+  &:focus { border-color: var(--color-gold); outline: none; }
+  &[aria-invalid="true"] { border-color: var(--color-rust); }
 }
 
 /* ─── Browser surfaces ─── */
 html {
-  background-color: var(--color-paper);
-  color: var(--color-ink);
+  background-color: var(--color-night);
+  color: var(--color-cream);
+  color-scheme: dark;
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
-  scrollbar-color: var(--color-ink-2) var(--color-paper-2);
+  scrollbar-color: var(--color-coal-3) var(--color-night);
   scroll-padding-top: 6rem;
 }
-body { background-color: var(--color-paper); }
-::selection { background: var(--color-ochre); color: var(--color-ink); }
-input, textarea { caret-color: var(--color-ochre-deep); }
-:focus-visible { outline: 2px solid var(--color-ink); outline-offset: 3px; border-radius: 6px; }
+body { background-color: var(--color-night); }
+::selection { background: var(--color-gold); color: var(--color-ink); }
+input, textarea, select { caret-color: var(--color-gold); }
+:focus-visible { outline: 2px solid var(--color-gold); outline-offset: 3px; border-radius: 6px; }
 a { text-underline-offset: 0.22em; text-decoration-thickness: 1px; }
 .tnum { font-variant-numeric: tabular-nums; }
+
+/* One warm light over the hero, like the pendant lamps over the counter. Not a background gradient on content. */
+.lamp { background: radial-gradient(60% 50% at 50% 0%, rgb(230 191 94 / 0.13), transparent 70%); }
+
+/* Fine film grain so the black reads as a material, not a void */
+.grain::after {
+  content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 60; opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
 
 .skip-link {
   position: fixed; left: 1rem; top: 1rem; z-index: 100;
   padding: 0.5rem 0.75rem; border-radius: 9999px;
-  background: var(--color-ink); color: var(--color-paper); font-weight: 500;
+  background: var(--color-gold); color: var(--color-ink); font-weight: 500;
   transform: translateY(-200%);
   transition: transform 200ms var(--ease-out);
 }
 .skip-link:focus { transform: none; }
 
-/* An open seat breathes so the eye finds it */
-@keyframes seat-breathe {
-  0%, 100% { opacity: 0.45; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.12); }
-}
-.seat-open-ring { transform-box: fill-box; transform-origin: center; animation: seat-breathe 2.6s var(--ease-out) infinite; }
-
-/* Seats set down one after another */
-@keyframes set-down { from { opacity: 0; transform: scale(1.08); } }
-.set-down { transform-box: fill-box; transform-origin: center; animation: set-down 500ms var(--ease-out) both; }
+/* The live dot on "next up": a slow pulse so the eye finds it */
+@keyframes live { 0%, 100% { opacity: 0.35; transform: scale(1); } 50% { opacity: 1; transform: scale(1.6); } }
+.live-dot::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: inherit; animation: live 2.4s var(--ease-in-out) infinite; }
 
 /* Page changes: the old page settles away, the new one rises a little */
-::view-transition-old(root) { animation: 180ms var(--ease-out) both vt-out; }
-::view-transition-new(root) { animation: 320ms var(--ease-out) both vt-in; }
+::view-transition-old(root) { animation: 160ms ease both vt-out; }
+::view-transition-new(root) { animation: 300ms var(--ease-out) both vt-in; }
 @keyframes vt-out { to { opacity: 0; } }
-@keyframes vt-in { from { opacity: 0; transform: translateY(16px); } }
+@keyframes vt-in { from { opacity: 0; transform: translateY(12px); } }
 
 @media (prefers-reduced-motion: reduce) {
-  .seat-open-ring { animation: none; opacity: 1; }
-  .set-down { animation-name: fade-in; }
-  @keyframes fade-in { from { opacity: 0; } }
+  .live-dot::before { animation: none; }
   *, ::before, ::after { scroll-behavior: auto !important; }
 }

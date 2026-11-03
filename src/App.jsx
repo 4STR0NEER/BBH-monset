@@ -3,41 +3,44 @@ import Nav from "./components/Nav.jsx";
 import { Logo } from "./components/ui.jsx";
 import Home from "./pages/Home.jsx";
 import Join from "./pages/Join.jsx";
-import Board from "./pages/Board.jsx";
+import MyCard, { PublicCard } from "./pages/Card.jsx";
+import Admin from "./pages/Admin.jsx";
 import Legal from "./pages/Legal.jsx";
 import { Link, usePath } from "./lib/router.jsx";
 
 const PAGES = {
   "/": Home,
   "/join": Join,
-  "/board": Board,
+  "/card": MyCard,
+  "/admin": Admin,
   "/privacy": () => <Legal kind="privacy" />,
   "/terms": () => <Legal kind="terms" />,
 };
 
 export default function App() {
   const path = usePath();
-  const Page = PAGES[path] ?? NotFound;
+  const cardId = path.match(/^\/c\/([\w-]+)\/?$/)?.[1];
+  const Page = cardId ? () => <PublicCard id={cardId} /> : (PAGES[path] ?? NotFound);
   return (
-    <>
+    <div className="grain">
       <Nav />
       <main id="main">
         <Page />
       </main>
       <Footer />
-    </>
+    </div>
   );
 }
 
 function NotFound() {
   return (
-    <section className="grid min-h-svh place-items-center px-4 pt-24 text-center">
+    <section className="lamp grid min-h-svh place-items-center px-4 pt-24 text-center">
       <div className="max-w-md">
-        <p className="tnum font-mono text-ochre-ink">404</p>
-        <h1 className="heading-3 mt-2 text-ink">This seat isn&rsquo;t at our table.</h1>
-        <p className="body-3 mt-3 text-ink-2">The page you followed doesn&rsquo;t exist. The breakfast does.</p>
-        <Link to="/" className="btn btn-plain button-md mt-8 px-5 py-2.5">
-          Back to the table
+        <p className="tnum font-mono text-gold">404</p>
+        <h1 className="serif-1 mt-2 text-cream">No table here.</h1>
+        <p className="body-3 mt-3 text-mute">The page you followed doesn&rsquo;t exist. The breakfasts do.</p>
+        <Link to="/" className="btn btn-line mt-8 px-6">
+          See the hubs
         </Link>
       </div>
     </section>
@@ -46,25 +49,28 @@ function NotFound() {
 
 function Footer() {
   return (
-    <footer className="px-4 pb-8">
-      <div className="panel-dark mx-auto flex max-w-6xl flex-col gap-6 rounded-[2rem] p-6 md:flex-row md:items-center md:justify-between md:p-8">
+    <footer className="px-4 pb-[max(2.5rem,env(safe-area-inset-bottom))]">
+      <div className="mx-auto flex max-w-6xl flex-col gap-6 border-t border-cream/10 pt-8 md:flex-row md:items-center md:justify-between">
         <div>
-          <Logo tone="paper" />
-          <p className="body-6 mt-3 text-paper/70">Business Breakfast Hub · Cebu, Philippines</p>
+          <Logo />
+          <p className="caption-5 mt-3 text-mute">Business Breakfast Hub · Cebu, Philippines</p>
         </div>
         <div className="flex flex-col gap-2 md:items-end">
-          <a href="https://www.facebook.com/adminBBH" target="_blank" rel="noreferrer" className="title-4 inline-flex items-center gap-2 text-paper hover:underline">
+          <a href="https://www.facebook.com/adminBBH" target="_blank" rel="noreferrer" className="title-4 inline-flex items-center gap-2 text-cream hover:underline">
             <FacebookLogo size={18} weight="bold" aria-hidden="true" /> BBH on Facebook
           </a>
-          <p className="caption-5 text-paper/70">Website by Monset, built pro bono for the BBH community.</p>
-          <p className="caption-5 flex gap-4 text-paper/70">
-            <Link to="/privacy" className="underline hover:text-paper">
+          <p className="caption-5 flex gap-4 text-mute">
+            <Link to="/privacy" className="underline hover:text-cream">
               Privacy
             </Link>
-            <Link to="/terms" className="underline hover:text-paper">
+            <Link to="/terms" className="underline hover:text-cream">
               Terms
             </Link>
+            <Link to="/admin" className="underline hover:text-cream">
+              Admin
+            </Link>
           </p>
+          <p className="caption-5 text-faint">Website by Monset, built pro bono for the BBH community.</p>
         </div>
       </div>
     </footer>

@@ -1,109 +1,88 @@
-import { cloneElement, useEffect, useId, useState } from "react";
-import { ArrowLeft, ArrowRight, CaretDown } from "@phosphor-icons/react";
-import PlaceCard from "../components/PlaceCard.jsx";
-import Table from "../components/Table.jsx";
-import { Reveal, fmtDate, fmtTime } from "../components/ui.jsx";
-import { EMAIL_RE, register, signIn, signOut, takenSeats, useUser } from "../lib/api.js";
+import { useEffect, useState } from "react";
+import { ArrowRight } from "@phosphor-icons/react";
+import DigitalCard from "../components/DigitalCard.jsx";
+import { Field, Reveal } from "../components/ui.jsx";
+import { DAY_NAMES, EMAIL_RE, isAdmin, register, signIn, useUser } from "../lib/api.js";
 import { Link, navigate, useSearch } from "../lib/router.jsx";
-import { NEXT_BREAKFAST, SEATS } from "../data/sample.js";
-
-const INDUSTRIES = ["Food and beverage", "Retail", "Construction and hardware", "Logistics and freight", "Health and wellness", "Professional services", "Tourism and hospitality", "Manufacturing", "Technology", "Other"];
-const AREAS = ["Cebu City", "Mandaue", "Lapu-Lapu", "Talisay", "Consolacion", "Liloan", "Minglanilla", "Elsewhere in Cebu"];
+import { AREAS, HUBS, INDUSTRIES } from "../data/sample.js";
 
 export default function Join() {
   const user = useUser();
   const params = new URLSearchParams(useSearch());
-  const [justFired, setJustFired] = useState(false);
-
-  if (user) return <MemberView user={user} animate={justFired} />;
-  if (params.get("mode") === "signin") return <SignIn onDone={() => setJustFired(true)} />;
-  return <Register initialSeat={Number(params.get("seat")) - 1} onDone={() => setJustFired(true)} />;
+  useEffect(() => {
+    if (user) navigate(isAdmin(user) ? "/admin" : "/card");
+  }, [user]);
+  if (user) return null;
+  if (params.get("mode") === "signin") return <SignIn />;
+  return <Register initialHub={params.get("hub")} />;
 }
 
-/* ─── Reserve a seat: fill your place card, then pick your chair ─── */
-
-function Register({ initialSeat, onDone }) {
-  const taken = takenSeats();
-  const firstOpen = SEATS.findIndex((_, i) => !taken.has(i));
-  const [card, setCard] = useState({
-    name: "",
-    business: "",
-    industry: "",
-    area: "",
-    email: "",
-    password: "",
-    seat: initialSeat >= 0 && !taken.has(initialSeat) ? initialSeat : null,
-  });
-  const [step, setStep] = useState(1);
+function useForm(initial) {
+  const [form, setForm] = useState(initial);
   const [errors, setErrors] = useState({});
+  const set = (k) => (e) => {
+    setForm((f) => ({ ...f, [k]: e.target.value }));
+    if (errors[k]) setErrors((x) => ({ ...x, [k]: undefined }));
+  };
+  const check = (rules) => {
+    const e = Object.fromEntries(Object.entries(rules).filter(([, bad]) => bad));
+    setErrors(e);
+    const first = Object.keys(e)[0];
+    if (first) document.getElementById(`f-${first}`)?.focus();
+    return !first;
+  };
+  return { form, set, errors, check };
+}
+
+/* ─── Join: fill in your card, pick your hub ─── */
+
+function Register({ initialHub }) {
+  const { form, set, errors, check } = useForm({
+    name: "", title: "", business: "", industry: "", area: "", phone: "", website: "", email: "", password: "",
+    hub: HUBS.some((h) => h.id === initialHub) ? initialHub : "",
+  });
   const [busy, setBusy] = useState(false);
   const [failed, setFailed] = useState("");
 
-  const set = (k) => (e) => {
-    setCard((c) => ({ ...c, [k]: e.target.value }));
-    if (errors[k]) setErrors((x) => ({ ...x, [k]: undefined }));
-  };
-
-  function validate() {
-    const e = {};
-    if (!card.name.trim()) e.name = "Add your name so the table knows who you are.";
-    if (!card.business.trim()) e.business = "Add your business name.";
-    if (!card.industry) e.industry = "Pick what your business does.";
-    if (!card.area) e.area = "Pick where you're based.";
-    if (!EMAIL_RE.test(card.email.trim())) e.email = "Enter an email like ana@limbuilders.ph.";
-    if (card.password.length < 8) e.password = "Use at least 8 characters.";
-    setErrors(e);
-    if (Object.keys(e).length) document.getElementById(`f-${Object.keys(e)[0]}`)?.focus();
-    return !Object.keys(e).length;
-  }
-
-  function next(e) {
+  async function submit(e) {
     e.preventDefault();
-    if (!validate()) return;
-    if (card.seat == null && firstOpen >= 0) setCard((c) => ({ ...c, seat: firstOpen }));
-    setStep(2);
-    scrollTo({ top: 0, behavior: "smooth" });
-  }
-
-  async function reserve() {
+    const ok = check({
+      name: !form.name.trim() && "Add your name so the table knows who you are.",
+      business: !form.business.trim() && "Add your business name.",
+      industry: !form.industry && "Pick your field of business.",
+      area: !form.area && "Pick where you're based.",
+      hub: !form.hub && "Pick the hub you'll go to.",
+      email: !EMAIL_RE.test(form.email.trim()) && "Enter an email like ana@limbuilders.ph.",
+      password: form.password.length < 8 && "Use at least 8 characters.",
+    });
+    if (!ok) return;
     setBusy(true);
     setFailed("");
     try {
-      onDone();
-      await register(card);
+      await register(form);
+      navigate("/card?new=1");
     } catch (err) {
       setFailed(err.message);
       setBusy(false);
     }
   }
 
-  const seats = SEATS.map((s, i) =>
-    i === card.seat
-      ? { name: card.name || "You", business: card.business, area: card.area, you: true }
-      : (s ?? (taken.has(i) ? { name: "Member", business: "Reserved", area: "Cebu" } : null)),
-  );
-
   return (
-    <Shell
-      title={step === 1 ? "Fill in your place card." : "Now pick your chair."}
-      lede={
-        step === 1
-          ? "This is what the table sees when you sit down. Your card fills in as you type."
-          : `Breakfast is ${fmtDate(NEXT_BREAKFAST.date)} at ${fmtTime(NEXT_BREAKFAST.date)}, ${NEXT_BREAKFAST.venue}. Red seats are open.`
-      }
-      step={step}
-      card={<PlaceCard card={card} />}
-    >
-      {step === 1 ? (
-        <form noValidate onSubmit={next} className="grid gap-4 sm:grid-cols-2">
+    <Shell title="Join a hub" lede="Fill in your card. This is what people see when they scan you at breakfast." card={<DigitalCard member={form} />}>
+      <form noValidate onSubmit={submit} className="flex flex-col gap-10">
+        <fieldset className="grid gap-4 sm:grid-cols-2">
+          <legend className="label mb-4 text-gold">Your card</legend>
           <Field id="name" label="Your name" error={errors.name} className="sm:col-span-2">
-            <input value={card.name} onChange={set("name")} autoComplete="name" placeholder="Ana Lim" maxLength={40} />
+            <input value={form.name} onChange={set("name")} autoComplete="name" placeholder="Ana Lim" maxLength={40} />
           </Field>
-          <Field id="business" label="Business name" error={errors.business} className="sm:col-span-2">
-            <input value={card.business} onChange={set("business")} autoComplete="organization" placeholder="Lim Builders Supply" maxLength={48} />
+          <Field id="title" label="Title" hint="Optional">
+            <input value={form.title} onChange={set("title")} autoComplete="organization-title" placeholder="Owner" maxLength={32} />
           </Field>
-          <Field id="industry" label="What it does" error={errors.industry}>
-            <select value={card.industry} onChange={set("industry")}>
+          <Field id="business" label="Business name" error={errors.business}>
+            <input value={form.business} onChange={set("business")} autoComplete="organization" placeholder="Lim Builders Supply" maxLength={48} />
+          </Field>
+          <Field id="industry" label="Field of business" error={errors.industry}>
+            <select value={form.industry} onChange={set("industry")}>
               <option value="">Choose one</option>
               {INDUSTRIES.map((x) => (
                 <option key={x}>{x}</option>
@@ -111,79 +90,103 @@ function Register({ initialSeat, onDone }) {
             </select>
           </Field>
           <Field id="area" label="Where you're based" error={errors.area}>
-            <select value={card.area} onChange={set("area")}>
+            <select value={form.area} onChange={set("area")}>
               <option value="">Choose one</option>
               {AREAS.map((x) => (
                 <option key={x}>{x}</option>
               ))}
             </select>
           </Field>
-          <Field id="email" label="Email" error={errors.email}>
-            <input type="email" value={card.email} onChange={set("email")} autoComplete="email" inputMode="email" placeholder="ana@limbuilders.ph" />
+          <Field id="phone" label="Mobile" hint="Optional, shown on your card">
+            <input type="tel" value={form.phone} onChange={set("phone")} autoComplete="tel" inputMode="tel" placeholder="+63 917 000 0000" maxLength={20} />
           </Field>
-          <Field id="password" label="Password" hint="At least 8 characters" error={errors.password}>
-            <input type="password" value={card.password} onChange={set("password")} autoComplete="new-password" />
+          <Field id="website" label="Website" hint="Optional">
+            <input value={form.website} onChange={set("website")} autoComplete="url" inputMode="url" placeholder="limbuilders.ph" maxLength={60} />
           </Field>
-          <div className="mt-2 flex flex-wrap items-center gap-4 sm:col-span-2">
-            <button type="submit" className="btn btn-primary button-md px-5 py-2.5">
-              Next: pick your seat <ArrowRight weight="bold" aria-hidden="true" />
-            </button>
-            <Link to="/join?mode=signin" className="title-4 text-ink underline">
-              Already have a seat? Sign in
-            </Link>
+        </fieldset>
+
+        <fieldset aria-describedby={errors.hub ? "hub-err" : undefined}>
+          <legend className="label mb-4 text-gold">Your hub</legend>
+          <div className="grid gap-2 sm:grid-cols-2" id="f-hub" tabIndex={-1}>
+            {HUBS.map((h) => (
+              <label
+                key={h.id}
+                className={`flex cursor-pointer items-center justify-between gap-3 rounded-xl border px-4 py-3 transition-colors duration-200 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-gold ${
+                  form.hub === h.id ? "border-gold bg-gold-soft" : "border-cream/12 hover:border-cream/25"
+                }`}
+              >
+                <input type="radio" name="hub" value={h.id} checked={form.hub === h.id} onChange={set("hub")} className="sr-only" />
+                <span className="min-w-0">
+                  <span className="title-3 block truncate text-cream">{h.name}</span>
+                  <span className="caption-5 block truncate text-mute">
+                    {h.venue}, {h.city}
+                  </span>
+                </span>
+                <span className={`tnum caption-5 shrink-0 text-right font-mono ${form.hub === h.id ? "text-gold" : "text-mute"}`}>
+                  {DAY_NAMES[h.day].slice(0, 3)}
+                  <br />
+                  {h.time}
+                </span>
+              </label>
+            ))}
           </div>
-        </form>
-      ) : (
-        <div>
-          <Table seats={seats} onPick={(i) => setCard((c) => ({ ...c, seat: i }))} className="mx-auto max-w-[480px]" />
-          {failed && (
-            <p role="alert" className="body-6 surface mt-6 rounded-xl border-rust px-4 py-3 text-rust">
-              {failed}
+          {errors.hub && (
+            <p id="hub-err" className="caption-5 mt-2 text-rust">
+              {errors.hub}
             </p>
           )}
-          <div className="mt-6 flex flex-wrap items-center gap-4">
-            <button type="button" onClick={reserve} disabled={busy || card.seat == null} className="btn btn-primary button-md px-5 py-2.5">
-              {busy ? "Setting your place…" : card.seat == null ? "Pick an open seat" : `Reserve seat ${card.seat + 1}`}
-            </button>
-            <button type="button" onClick={() => setStep(1)} className="title-4 inline-flex items-center gap-1 rounded-full text-ink hover:underline">
-              <ArrowLeft weight="bold" aria-hidden="true" /> Edit my card
-            </button>
-          </div>
+        </fieldset>
+
+        <fieldset className="grid gap-4 sm:grid-cols-2">
+          <legend className="label mb-4 text-gold">Your account</legend>
+          <Field id="email" label="Email" error={errors.email}>
+            <input type="email" value={form.email} onChange={set("email")} autoComplete="email" inputMode="email" placeholder="ana@limbuilders.ph" />
+          </Field>
+          <Field id="password" label="Password" hint="At least 8 characters" error={errors.password}>
+            <input type="password" value={form.password} onChange={set("password")} autoComplete="new-password" />
+          </Field>
+        </fieldset>
+
+        {failed && (
+          <p role="alert" className="body-6 rounded-xl border border-rust/40 px-4 py-3 text-rust">
+            {failed}
+          </p>
+        )}
+        <div className="flex flex-wrap items-center gap-5">
+          <button type="submit" disabled={busy} className="btn btn-gold px-6">
+            {busy ? "Making your card…" : "Make my card"} {!busy && <ArrowRight weight="bold" aria-hidden="true" />}
+          </button>
+          <Link to="/join?mode=signin" className="title-4 text-cream underline decoration-cream/30 hover:decoration-cream">
+            Already a member? Sign in
+          </Link>
         </div>
-      )}
+      </form>
     </Shell>
   );
 }
 
-/* ─── Take your seat: sign in ─── */
+/* ─── Sign in ─── */
 
-function SignIn({ onDone }) {
-  const [form, setForm] = useState({ email: "", password: "" });
-  const [errors, setErrors] = useState({});
+function SignIn() {
+  const { form, set, errors, check } = useForm({ email: "", password: "" });
   const [busy, setBusy] = useState(false);
   const [failed, setFailed] = useState("");
 
   async function submit(e) {
     e.preventDefault();
-    const x = {};
-    if (!EMAIL_RE.test(form.email.trim())) x.email = "Enter the email you registered with.";
-    if (!form.password) x.password = "Enter your password.";
-    setErrors(x);
-    if (Object.keys(x).length) return document.getElementById(`f-${Object.keys(x)[0]}`)?.focus();
+    if (!check({ email: !EMAIL_RE.test(form.email.trim()) && "Enter the email you joined with.", password: !form.password && "Enter your password." })) return;
     setBusy(true);
     setFailed("");
     try {
-      onDone();
-      await signIn(form);
+      await signIn(form); // Join's effect sends you to your card (or the admin)
     } catch (err) {
       setFailed(err.message);
       setBusy(false);
     }
   }
-  const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
 
   return (
-    <Shell title="Take your seat." lede="Welcome back. Sign in and your member card turns over." card={<PlaceCard card={{ name: "Welcome back", business: "Your seat is waiting" }} />}>
+    <Shell title="Welcome back" lede="Sign in to open your card." card={<DigitalCard member={{ name: "Welcome back", business: "Your card is waiting" }} />}>
       <form noValidate onSubmit={submit} className="grid max-w-md gap-4">
         <Field id="email" label="Email" error={errors.email}>
           <input type="email" value={form.email} onChange={set("email")} autoComplete="email" inputMode="email" />
@@ -192,16 +195,16 @@ function SignIn({ onDone }) {
           <input type="password" value={form.password} onChange={set("password")} autoComplete="current-password" />
         </Field>
         {failed && (
-          <p role="alert" className="body-6 surface rounded-xl border-rust px-4 py-3 text-rust">
+          <p role="alert" className="body-6 rounded-xl border border-rust/40 px-4 py-3 text-rust">
             {failed}
           </p>
         )}
-        <div className="mt-2 flex flex-wrap items-center gap-4">
-          <button type="submit" disabled={busy} className="btn btn-primary button-md px-5 py-2.5">
-            {busy ? "Finding your seat…" : "Take my seat"}
+        <div className="mt-2 flex flex-wrap items-center gap-5">
+          <button type="submit" disabled={busy} className="btn btn-gold px-6">
+            {busy ? "Signing in…" : "Sign in"}
           </button>
-          <Link to="/join" className="title-4 text-ink underline">
-            New here? Reserve a seat
+          <Link to="/join" className="title-4 text-cream underline decoration-cream/30 hover:decoration-cream">
+            New here? Join a hub
           </Link>
         </div>
       </form>
@@ -209,100 +212,17 @@ function SignIn({ onDone }) {
   );
 }
 
-/* ─── Signed in: the member card ─── */
-
-function MemberView({ user, animate }) {
-  const [flipped, setFlipped] = useState(!animate);
-  useEffect(() => {
-    if (!animate) return;
-    const t = setTimeout(() => setFlipped(true), 120); // let the front land, then turn it over
-    return () => clearTimeout(t);
-  }, [animate]);
-
+function Shell({ title, lede, card, children }) {
   return (
-    <Shell
-      title={animate ? "Your seat is set." : `Good morning, ${user.name.split(" ")[0]}.`}
-      lede={
-        user.seat != null
-          ? `You're in seat ${user.seat + 1} for ${fmtDate(NEXT_BREAKFAST.date)} at ${fmtTime(NEXT_BREAKFAST.date)}. Kape is poured first; come a little early.`
-          : "You're a member. Pick a seat for the next breakfast from the board."
-      }
-      card={<PlaceCard card={user} flipped={flipped} />}
-    >
-      <div className="flex flex-wrap items-center gap-4">
-        <Link to="/board" className="btn btn-primary button-md px-5 py-2.5">
-          Go to the board <ArrowRight weight="bold" aria-hidden="true" />
-        </Link>
-        <Link to="/" className="btn btn-plain button-md px-5 py-2.5">
-          See your seat at the table
-        </Link>
-      </div>
-      <button
-        type="button"
-        onClick={() => {
-          signOut();
-          navigate("/");
-        }}
-        className="title-4 mt-8 rounded-full text-ink-2 underline hover:text-ink"
-      >
-        Sign out
-      </button>
-      <p className="caption-5 mt-6 max-w-sm text-ink-2">Demo: your account is saved in this browser only. Seat and schedule details are sample data.</p>
-    </Shell>
-  );
-}
-
-/* ─── shared bits ─── */
-
-function Shell({ title, lede, step, card, children }) {
-  return (
-    <section className="px-4 pt-28 pb-24 md:pt-36">
-      <div className="mx-auto grid max-w-6xl items-start gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] lg:gap-16">
+    <section className="lamp px-4 pt-32 pb-24 md:pt-40">
+      <div className="mx-auto grid max-w-6xl items-start gap-12 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] lg:gap-16">
         <div className="order-2 lg:order-1">
-          {step && (
-            <ol className="mb-6 flex items-center gap-2" aria-label={`Step ${step} of 2`}>
-              {["Place card", "Seat"].map((s, i) => (
-                <li key={s} className={`caption-3 flex items-center gap-2 ${i + 1 <= step ? "text-ink" : "text-ink-2"}`}>
-                  <span className={`tnum grid size-6 place-items-center rounded-full border font-mono ${i + 1 < step ? "border-ink bg-ink text-paper" : i + 1 === step ? "border-rust text-rust" : "border-line"}`}>{i + 1}</span>
-                  {s}
-                  {i === 0 && <span className="h-0.5 w-8 rounded-full bg-line" aria-hidden="true" />}
-                </li>
-              ))}
-            </ol>
-          )}
-          <h1 className="heading-3 md:heading-2 text-ink">{title}</h1>
-          <p className="body-3 mt-4 max-w-[34rem] text-ink-2">{lede}</p>
-          <div className="mt-8">{children}</div>
+          <h1 className="display-2 text-cream">{title}</h1>
+          <p className="body-3 mt-4 max-w-[34rem] text-mute">{lede}</p>
+          <div className="mt-10">{children}</div>
         </div>
         <Reveal className="order-1 lg:sticky lg:top-32 lg:order-2">{card}</Reveal>
       </div>
     </section>
-  );
-}
-
-function Field({ id, label, hint, error, className = "", children }) {
-  const uid = useId();
-  const msg = `${uid}-msg`;
-  return (
-    <div className={className}>
-      <label htmlFor={`f-${id}`} className="title-4 text-ink">
-        {label}
-      </label>
-      <div className="relative">
-      {cloneElement(children, {
-        id: `f-${id}`,
-        "aria-invalid": !!error || undefined,
-        "aria-describedby": error || hint ? msg : undefined,
-        className:
-          "body-3 mt-1.5 block h-12 w-full rounded-xl border border-line bg-paper px-3 text-ink shadow-[inset_0_2px_0_#fff] transition-colors duration-200 placeholder:text-ink-2/75 hover:border-ink/60 focus:border-ink focus-visible:outline-offset-2 aria-invalid:border-rust appearance-none",
-      })}
-      {children.type === "select" && <CaretDown size={16} weight="bold" aria-hidden="true" className="pointer-events-none absolute top-1/2 right-3 mt-[3px] -translate-y-1/2 text-ochre-ink" />}
-      </div>
-      {(error || hint) && (
-        <p id={msg} className={`caption-5 mt-1.5 ${error ? "text-rust" : "text-ink-2"}`}>
-          {error || hint}
-        </p>
-      )}
-    </div>
   );
 }

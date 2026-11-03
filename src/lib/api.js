@@ -1,14 +1,15 @@
 import { useSyncExternalStore } from "react";
-import { NEXT_BREAKFAST, POSTS, SEATS } from "../data/sample.js";
+import { HUBS, MEMBERS } from "../data/sample.js";
 
 // The backend seam. Every screen talks to these functions only, so swapping localStorage for
 // Supabase later means rewriting this file and nothing else.
-// ponytail: mock auth in the browser (SHA-256 of the password, no server). Fine for a demo;
-// real accounts need Supabase Auth before launch.
+// ponytail: mock auth in the browser (SHA-256 of the password, no server, admin role checked
+// client side). Fine for a demo; real accounts and the admin role need Supabase Auth + RLS.
 
 const USERS = "bbh.users";
 const SESSION = "bbh.session";
-const MY_POSTS = "bbh.posts";
+export const ADMIN_EMAIL = "admin@bbh.ph";
+export const DEMO_ADMIN_PASSWORD = "breakfast-admin"; // demo only, shown on the admin sign in
 const wait = (ms = 450) => new Promise((r) => setTimeout(r, ms)); // feels like a network call
 
 const read = (k, fallback) => {
@@ -36,6 +37,8 @@ const norm = (email) => email.trim().toLowerCase();
 const publicUser = ({ passwordHash, ...u }) => u;
 
 export const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+export const isAdmin = (u) => u?.role === "admin";
+export const hubById = (id) => HUBS.find((h) => h.id === id);
 
 export function getUser() {
   const email = read(SESSION, null);
@@ -43,44 +46,47 @@ export function getUser() {
   return u ? publicUser(u) : null;
 }
 
-// Cached so useSyncExternalStore gets the same object until something changes.
-let cache = { key: undefined, user: null };
-function snapshot() {
-  const key = localStorage.getItem(SESSION) + localStorage.getItem(USERS);
-  if (key !== cache.key) cache = { key, user: getUser() };
-  return cache.user;
+// Cached so useSyncExternalStore gets the same object until storage changes.
+function cached(fn) {
+  let c = { key: undefined, value: null };
+  return () => {
+    const key = localStorage.getItem(SESSION) + localStorage.getItem(USERS);
+    if (key !== c.key) c = { key, value: fn() };
+    return c.value;
+  };
 }
-export const useUser = () => useSyncExternalStore(subscribe, snapshot, () => null);
+const userSnap = cached(getUser);
+const membersSnap = cached(() => allMembers());
+export const useUser = () => useSyncExternalStore(subscribe, userSnap, () => null);
+export const useMembers = () => useSyncExternalStore(subscribe, membersSnap, () => MEMBERS);
 
-// Seats taken by sample members plus everyone registered on this browser.
-export function takenSeats() {
-  const taken = new Set(SEATS.flatMap((s, i) => (s ? [i] : [])));
-  for (const u of Object.values(read(USERS, {}))) if (u.seat != null) taken.add(u.seat);
-  return taken;
+// Sample members plus everyone who registered on this browser. Admin accounts aren't members.
+export function allMembers() {
+  const local = Object.values(read(USERS, {})).filter((u) => !isAdmin(u)).map(publicUser);
+  return [...local, ...MEMBERS];
 }
+export const getMember = (id) => allMembers().find((x) => x.id.toLowerCase() === String(id).toLowerCase()) ?? null;
 
-// The landing table, with the signed-in member sitting in their seat.
-export function seatsFor(user) {
-  return SEATS.map((s, i) => (user?.seat === i ? { name: user.name, business: user.business, area: user.area, you: true } : s));
-}
-
-export async function register({ name, business, industry, area, email, password, seat }) {
+export async function register({ name, title, business, industry, area, hub, phone, website, email, password }) {
   await wait();
   const users = read(USERS, {});
   const key = norm(email);
-  if (users[key]) throw new Error("That email already has a seat. Take your seat to sign in instead.");
-  if (seat != null && takenSeats().has(seat)) throw new Error("Someone just took that seat. Pick another one.");
+  if (users[key] || key === ADMIN_EMAIL) throw new Error("That email already has a card. Sign in instead.");
+  if (!hubById(hub)) throw new Error("Pick a hub to join.");
   const count = Object.keys(users).length;
   const user = {
+    id: `BBH-${String(MEMBERS.length + 1 + count).padStart(4, "0")}`, // sample numbering
     name: name.trim(),
+    title: title.trim(),
     business: business.trim(),
     industry,
     area,
+    hub,
+    phone: phone.trim(),
+    website: website.trim().replace(/^https?:\/\//, ""),
     email: key,
-    seat,
-    breakfast: NEXT_BREAKFAST.date,
-    memberNo: `BBH-${String(48 + count).padStart(4, "0")}`, // sample numbering
-    joined: new Date().toISOString(),
+    attending: false,
+    joined: new Date().toISOString().slice(0, 10),
     passwordHash: await hash(key, password),
   };
   write(USERS, { ...users, [key]: user });
@@ -91,8 +97,13 @@ export async function register({ name, business, industry, area, email, password
 export async function signIn({ email, password }) {
   await wait();
   const key = norm(email);
+  const users = read(USERS, {});
+  // The demo admin account is created on first sign in with the demo password.
+  if (key === ADMIN_EMAIL && !users[key] && password === DEMO_ADMIN_PASSWORD) {
+    write(USERS, { ...users, [key]: { id: "admin", name: "BBH Admin", email: key, role: "admin", passwordHash: await hash(key, password) } });
+  }
   const u = read(USERS, {})[key];
-  if (!u || u.passwordHash !== (await hash(key, password))) throw new Error("That email and password don't match a seat. Check them and try again.");
+  if (!u || u.passwordHash !== (await hash(key, password))) throw new Error("That email and password don't match. Check them and try again.");
   write(SESSION, key);
   return publicUser(u);
 }
@@ -102,52 +113,60 @@ export function signOut() {
   emit();
 }
 
-// Open seats for the next breakfast: the sample count, minus members on this browser with a seat.
-export function seatsLeft() {
-  const seated = Object.values(read(USERS, {})).filter((u) => u.seat != null).length;
-  return Math.max(0, NEXT_BREAKFAST.seatsTotal - NEXT_BREAKFAST.seatsTaken - seated);
-}
-
-function updateMe(patch) {
+const EDITABLE = ["name", "title", "business", "industry", "area", "hub", "phone", "website", "attending"];
+export async function updateProfile(patch) {
+  await wait(250);
   const users = read(USERS, {});
   const key = read(SESSION, null);
-  if (!users[key]) throw new Error("You're signed out. Take your seat again to continue.");
-  write(USERS, { ...users, [key]: { ...users[key], ...patch } });
-  return publicUser(users[key]);
+  if (!users[key]) throw new Error("You're signed out. Sign in again to continue.");
+  const clean = Object.fromEntries(Object.entries(patch).filter(([k]) => EDITABLE.includes(k)));
+  if (clean.hub && !hubById(clean.hub)) throw new Error("Pick a hub to join.");
+  if ("name" in clean && !String(clean.name).trim()) throw new Error("Your card needs a name.");
+  write(USERS, { ...users, [key]: { ...users[key], ...clean } });
+  return getUser();
 }
 
-export async function reserveSeat(seat) {
-  await wait(300);
-  if (takenSeats().has(seat)) throw new Error("Someone just took that seat. Pick another one.");
-  return updateMe({ seat });
+// ─── The week: when each hub meets next, in Cebu time ───
+
+export function manilaNow(now = new Date()) {
+  const p = Object.fromEntries(
+    new Intl.DateTimeFormat("en-US", { timeZone: "Asia/Manila", weekday: "short", hour: "numeric", minute: "numeric", hourCycle: "h23" })
+      .formatToParts(now)
+      .map((x) => [x.type, x.value]),
+  );
+  const day = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].indexOf(p.weekday);
+  return { day, min: Number(p.hour) * 60 + Number(p.minute) };
 }
 
-export async function giveUpSeat() {
-  await wait(200);
-  return updateMe({ seat: null });
+// "8:30 AM" → 510. A time without AM/PM is read as morning: these are breakfasts.
+export function minutesOf(time) {
+  const [, h, mm, ap] = time.match(/(\d{1,2}):(\d{2})\s*(AM|PM)?/i) ?? [, "0", "0"];
+  return ((Number(h) % 12) + (ap?.toUpperCase() === "PM" ? 12 : 0)) * 60 + Number(mm);
 }
 
-export const firstOpenSeat = () => SEATS.findIndex((_, i) => !takenSeats().has(i));
-
-// Asks and offers: sample posts plus anything posted on this browser, newest first.
-export function listPosts() {
-  return [...read(MY_POSTS, []), ...POSTS].sort((a, b) => b.at.localeCompare(a.at));
+// Minutes until the hub's next breakfast starts (a breakfast that started under 90 min ago still counts as now).
+export function minutesUntil(hub, now = new Date()) {
+  const t = manilaNow(now);
+  let diff = ((hub.day - t.day + 7) % 7) * 1440 + minutesOf(hub.time) - t.min;
+  if (diff < -90) diff += 7 * 1440;
+  return diff;
 }
-let postsCache = { key: undefined, list: [] };
-export const usePosts = () =>
-  useSyncExternalStore(subscribe, () => {
-    const key = localStorage.getItem(MY_POSTS);
-    if (key !== postsCache.key) postsCache = { key, list: listPosts() };
-    return postsCache.list;
-  });
 
-export async function addPost({ kind, text }) {
-  await wait(300);
-  const me = getUser();
-  if (!me) throw new Error("You're signed out. Take your seat again to post.");
-  const clean = text.trim();
-  if (clean.length < 10) throw new Error("Say a little more so the table can help: at least 10 characters.");
-  const post = { id: `m${Date.now()}`, kind, name: me.name, business: me.business, at: new Date().toISOString(), text: clean.slice(0, 280), mine: true };
-  write(MY_POSTS, [post, ...read(MY_POSTS, [])]);
-  return post;
+export const hubsByNext = (now = new Date()) => [...HUBS].sort((a, b) => minutesUntil(a, now) - minutesUntil(b, now));
+
+export function whenLabel(hub, now = new Date()) {
+  const d = minutesUntil(hub, now);
+  if (d <= 0) return "Happening now";
+  if (d < 1440 && hub.day === manilaNow(now).day) return `Today · ${hub.time}`;
+  if (d < 2880 && (hub.day - manilaNow(now).day + 7) % 7 === 1) return `Tomorrow · ${hub.time}`;
+  return `${DAY_NAMES[hub.day]} · ${hub.time}`;
 }
+export const DAY_NAMES = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+// ─── Admin views ───
+
+export const groupBy = (list, key) =>
+  list.reduce((acc, x) => {
+    (acc[x[key]] ??= []).push(x);
+    return acc;
+  }, {});

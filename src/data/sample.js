@@ -1,79 +1,65 @@
-// SAMPLE DATA. Every name, business, date and venue here is made up for the demo.
-// Replace with BBH's real details before launch; the UI labels all of it "Sample".
+// HUBS come from BBH's live app (Nov 2026). Everything else here is SAMPLE: made-up members,
+// businesses and deals for the demo. Replace before launch; the UI labels sample content "Sample".
 
-// Seats around the table on the landing page. `null` = an open seat.
-export const SEATS = [
-  { name: "Ana Lim", business: "Lim Builders Supply", area: "Mandaue" },
-  { name: "Jun Villaflor", business: "Kape Sugbo Roasters", area: "Cebu City" },
-  { name: "Grace Abellana", business: "Abellana Bakeshop", area: "Talisay" },
-  null,
-  { name: "Rafael Uy", business: "Pier 3 Freight", area: "North Reclamation" },
-  { name: "Mae Tan", business: "Tan Dental Studio", area: "Banilad" },
-  { name: "Carlo Mendoza", business: "Isla Furniture Works", area: "Mandaue" },
-  null,
-  { name: "Liza Cabahug", business: "Cabahug Travel and Tours", area: "Lapu-Lapu" },
-  { name: "Ben Yap", business: "Yap Auto Parts", area: "Colon" },
+// day: 0 = Sunday … 6 = Saturday, Asia/Manila
+export const HUBS = [
+  { id: "flora-faun", name: "Flora & Faun", day: 2, time: "8:30 AM", venue: "Patria de Cebu", city: "Cebu City" },
+  { id: "bakery-soesterberg", name: "Bakery Soesterberg", day: 3, time: "8:30 AM", venue: "Bakery Soesterberg", city: "Cebu City" },
+  { id: "88-garden-cafe", name: "88 Garden Cafe", day: 4, time: "9:00 AM", venue: "Paseo Ricardo", city: "Talisay City" },
+  { id: "2nd-anniversary", name: "2nd Anniversary", day: 5, time: "6:00 AM", venue: "1Nito", city: "Cebu City" },
+  { id: "la-carne", name: "La Carne", day: 5, time: "8:30 AM", venue: "La Carne", city: "Banilad" },
 ];
 
-export const NEXT_BREAKFAST = {
-  date: "2026-11-05T06:30:00+08:00",
-  venue: "Sample venue, Cebu IT Park",
-  topic: "Hiring your first manager",
-  speaker: "Mae Tan, Tan Dental Studio",
-  seatsTotal: 24,
-  seatsTaken: 19,
-};
-
-// How a breakfast runs. `min` sets each block's length on the page, so a 30 minute block is
-// visibly twice a 15 minute one.
-export const AGENDA = [
-  { time: "6:30", min: 30, title: "Kape and arrivals", text: "Find your place card, pour a cup, meet whoever sits beside you." },
-  { time: "7:00", min: 20, title: "Round the table", text: "Everyone gets a minute: who you are, what you sell, what you need this month." },
-  { time: "7:20", min: 25, title: "Member feature", text: "One member walks the table through a real problem in their business and what they did about it." },
-  { time: "7:45", min: 15, title: "Asks and offers", text: "Suppliers, hires, referrals. Say what you need; someone at the table usually knows someone." },
-];
-export const AGENDA_END = "8:00";
-
-export const BOARD_PREVIEW = [
-  { tag: "News", title: "Mandaue suppliers report shorter port delays after the new North Reclamation schedule" },
-  { tag: "Feature", title: "How Abellana Bakeshop went from one oven in Talisay to three branches" },
-  { tag: "Asks", title: "Looking for a bookkeeper who knows BIR electronic invoicing, part time" },
+export const INDUSTRIES = [
+  "Food and beverage",
+  "Retail",
+  "Construction and hardware",
+  "Logistics and freight",
+  "Health and wellness",
+  "Professional services",
+  "Tourism and hospitality",
+  "Manufacturing",
+  "Technology",
+  "Real estate",
+  "Other",
 ];
 
-// ─── The member board (all sample) ───
+export const AREAS = ["Cebu City", "Mandaue", "Lapu-Lapu", "Talisay", "Consolacion", "Liloan", "Minglanilla", "Elsewhere in Cebu"];
 
-export const NEWS = [
-  { id: "n1", tag: "Members", date: "2026-11-02", title: "Tan Dental Studio opens a second chair in Banilad and is hiring an assistant", text: "Mae Tan says the new chair doubles weekday slots. She is looking for an assistant with clinic experience; ask her at Thursday's breakfast." },
-  { id: "n2", tag: "Cebu business", date: "2026-11-01", title: "Mandaue suppliers report shorter port delays after the North Reclamation schedule change", text: "Three members in hardware and freight say container pickups are moving a day faster this month. Rafael Uy will share numbers on Nov 26." },
-  { id: "n3", tag: "Tips", date: "2026-10-30", title: "What electronic invoicing means for small retailers, in plain terms", text: "A one page summary from a member accountant: who has to switch, what your POS needs, and the three mistakes she sees most." },
-  { id: "n4", tag: "Cebu business", date: "2026-10-29", title: "Colon and Carbon vendors start stocking early for holiday foot traffic", text: "Members in retail compare notes on how much to order before December and which suppliers still have stock." },
-  { id: "n5", tag: "Members", date: "2026-10-27", title: "Kape Sugbo Roasters now supplies three IT Park cafes", text: "Jun Villaflor landed the third account through an introduction at the October breakfast." },
-  { id: "n6", tag: "Tips", date: "2026-10-24", title: "Getting your business permit renewal done before the January rush", text: "A checklist from members who renewed early last year, with the documents most people forget." },
+const m = (id, name, title, business, industry, area, hub, attending, joined, phone, website) => ({
+  id: `BBH-${String(id).padStart(4, "0")}`,
+  name, title, business, industry, area, hub, attending, joined, phone, website,
+  email: `${name.split(" ")[0].toLowerCase()}@${business.toLowerCase().replace(/[^a-z]/g, "").slice(0, 14)}.ph`,
+  sample: true,
+});
+
+export const MEMBERS = [
+  m(1, "Ana Lim", "Owner", "Lim Builders Supply", "Construction and hardware", "Mandaue", "flora-faun", true, "2025-02-14", "+63 917 555 0101", "limbuilders.ph"),
+  m(2, "Jun Villaflor", "Head roaster", "Kape Sugbo Roasters", "Food and beverage", "Cebu City", "bakery-soesterberg", true, "2025-03-02", "+63 917 555 0102", "kapesugbo.ph"),
+  m(3, "Grace Abellana", "Owner", "Abellana Bakeshop", "Food and beverage", "Talisay", "88-garden-cafe", true, "2025-03-20", "+63 917 555 0103", ""),
+  m(4, "Rafael Uy", "Managing director", "Pier 3 Freight", "Logistics and freight", "Cebu City", "la-carne", false, "2025-04-11", "+63 917 555 0104", "pier3freight.ph"),
+  m(5, "Mae Tan", "Dentist and founder", "Tan Dental Studio", "Health and wellness", "Cebu City", "flora-faun", true, "2025-05-08", "+63 917 555 0105", "tandental.ph"),
+  m(6, "Carlo Mendoza", "Founder", "Isla Furniture Works", "Manufacturing", "Mandaue", "2nd-anniversary", true, "2025-05-30", "+63 917 555 0106", "islafurniture.ph"),
+  m(7, "Liza Cabahug", "Owner", "Cabahug Travel and Tours", "Tourism and hospitality", "Lapu-Lapu", "la-carne", true, "2025-06-17", "+63 917 555 0107", ""),
+  m(8, "Ben Yap", "General manager", "Yap Auto Parts", "Retail", "Cebu City", "bakery-soesterberg", false, "2025-07-04", "+63 917 555 0108", ""),
+  m(9, "Tessa Ouano", "Partner", "Ouano Law Office", "Professional services", "Mandaue", "flora-faun", true, "2025-07-22", "+63 917 555 0109", "ouanolaw.ph"),
+  m(10, "Paolo Sy", "CTO", "Sugbo Cloud", "Technology", "Cebu City", "88-garden-cafe", true, "2025-08-09", "+63 917 555 0110", "sugbocloud.ph"),
+  m(11, "Joy Remedio", "Broker", "Remedio Realty", "Real estate", "Talisay", "88-garden-cafe", false, "2025-08-28", "+63 917 555 0111", ""),
+  m(12, "Mark Gaisano", "Operations head", "Banilad Fresh Mart", "Retail", "Cebu City", "la-carne", true, "2025-09-15", "+63 917 555 0112", ""),
+  m(13, "Ria Fernandez", "Accountant", "Fernandez Books and Tax", "Professional services", "Cebu City", "bakery-soesterberg", true, "2025-10-03", "+63 917 555 0113", ""),
+  m(14, "Nico Alcoseba", "Owner", "Alcoseba Print Shop", "Manufacturing", "Consolacion", "2nd-anniversary", false, "2025-11-19", "+63 917 555 0114", ""),
+  m(15, "Bea Durano", "Clinic director", "Durano Physio", "Health and wellness", "Mandaue", "la-carne", true, "2026-01-12", "+63 917 555 0115", "duranophysio.ph"),
+  m(16, "Kevin Lao", "Founder", "Lao Solar Systems", "Construction and hardware", "Liloan", "2nd-anniversary", true, "2026-02-26", "+63 917 555 0116", "laosolar.ph"),
+  m(17, "Cathy Borromeo", "Chef and owner", "Kusina Borromeo", "Food and beverage", "Cebu City", "flora-faun", false, "2026-04-07", "+63 917 555 0117", ""),
+  m(18, "Dan Pacana", "Fleet manager", "Pacana Logistics", "Logistics and freight", "Minglanilla", "88-garden-cafe", true, "2026-06-21", "+63 917 555 0118", ""),
 ];
 
-export const SCHEDULE = [
-  { date: "2026-11-05T06:30:00+08:00", topic: "Hiring your first manager", lead: "Mae Tan, Tan Dental Studio", seatsLeft: 5 },
-  { date: "2026-11-12T06:30:00+08:00", topic: "Selling to IT Park offices", lead: "Jun Villaflor, Kape Sugbo Roasters", seatsLeft: 11 },
-  { date: "2026-11-19T06:30:00+08:00", topic: "Cash flow before the holidays", lead: "Grace Abellana, Abellana Bakeshop", seatsLeft: 14 },
-  { date: "2026-11-26T06:30:00+08:00", topic: "Moving goods through Cebu ports", lead: "Rafael Uy, Pier 3 Freight", seatsLeft: 17 },
-  { date: "2026-12-03T06:30:00+08:00", topic: "Year end round table: what worked this year", lead: "Everyone at the table", seatsLeft: 21 },
-];
-
-export const SPOTLIGHT = {
-  name: "Grace Abellana",
-  business: "Abellana Bakeshop",
-  area: "Talisay",
-  title: "From one oven in Talisay to three branches",
-  quote: "I stopped trying to bake everything. Pan de sal and ensaymada pay the rent; everything else is a special.",
-  text: [
-    "Grace took over her mother's bakeshop with one deck oven and a counter facing the national road. For two years she baked forty products and sold out of none of them.",
-    "She cut the menu to the six items that sold before 8 AM, moved baking to 3 AM, and opened her second branch beside a jeepney terminal. The third came from a referral at a BBH breakfast.",
-  ],
-};
-
-export const POSTS = [
-  { id: "p1", kind: "ask", name: "Liza Cabahug", business: "Cabahug Travel and Tours", at: "2026-11-01T09:12:00+08:00", text: "Looking for a part time bookkeeper who knows BIR electronic invoicing. Lapu-Lapu or remote." },
-  { id: "p2", kind: "offer", name: "Carlo Mendoza", business: "Isla Furniture Works", at: "2026-10-31T17:40:00+08:00", text: "Spare workshop space in Mandaue on weekends. Good for small furniture or packaging work." },
-  { id: "p3", kind: "ask", name: "Ben Yap", business: "Yap Auto Parts", at: "2026-10-30T07:55:00+08:00", text: "Anyone know a reliable courier for auto parts to Bohol? Weekly, mostly small boxes." },
-  { id: "p4", kind: "offer", name: "Jun Villaflor", business: "Kape Sugbo Roasters", at: "2026-10-28T06:20:00+08:00", text: "Ten percent off coffee beans for BBH members' offices this month. Message me for the price list." },
+// Member deals: offers from (sample) member businesses to other BBH members.
+export const DEALS = [
+  { id: "d1", value: "10%", title: "Off coffee beans for your office", by: "BBH-0002", hub: "bakery-soesterberg", until: "2026-11-30" },
+  { id: "d2", value: "Free", title: "First consultation on contracts and permits", by: "BBH-0009", hub: "flora-faun", until: "2026-12-15" },
+  { id: "d3", value: "15%", title: "Off domestic freight to Bohol and Leyte", by: "BBH-0004", hub: "la-carne", until: "2026-12-31" },
+  { id: "d4", value: "₱500", title: "Off your first dental cleaning", by: "BBH-0005", hub: "flora-faun", until: "2026-12-31" },
+  { id: "d5", value: "2 for 1", title: "Ensaymada boxes for client meetings", by: "BBH-0003", hub: "88-garden-cafe", until: "2026-11-28" },
+  { id: "d6", value: "20%", title: "Off a rooftop solar site assessment", by: "BBH-0016", hub: "2nd-anniversary", until: "2027-01-31" },
 ];
